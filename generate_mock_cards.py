@@ -83,7 +83,6 @@ def main():
         d.text((x, y - 60), f"{name} layout, actual size 85.6 x 54 mm — print at 100%", font=font(SANS, 28), fill=(90, 90, 90))
         im.save(out / f"mock-{name}.png", dpi=(DPI, DPI))
         print(f"{name}: card {im.size}px, intended data_zone {zone}")
-    page.save(out / "mock-cards-letter.pdf", resolution=DPI)
     page.resize((PAGE_W // 3, PAGE_H // 3)).save(out / "mock-cards-preview.png")
     print("wrote", sorted(p.name for p in out.iterdir()))
 
