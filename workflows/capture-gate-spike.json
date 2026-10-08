@@ -1,0 +1,95 @@
+{
+  "version": "1.0",
+  "inputs": [
+    {
+      "type": "InferenceImage",
+      "name": "image"
+    }
+  ],
+  "steps": [
+    {
+      "type": "LaplacianVarianceV2",
+      "name": "custom_python_block",
+      "image": "$inputs.image"
+    }
+  ],
+  "outputs": [
+    {
+      "type": "JsonField",
+      "name": "custom_python_block_output",
+      "coordinates_system": "own",
+      "selector": "$steps.custom_python_block.laplacian_variance"
+    }
+  ],
+  "dynamic_blocks_definitions": [
+    {
+      "type": "DynamicBlockDefinition",
+      "manifest": {
+        "type": "ManifestDescription",
+        "description": "",
+        "block_type": "LaplacianVarianceV2",
+        "inputs": {
+          "image": {
+            "type": "DynamicInputDefinition",
+            "selector_types": [
+              "input_image",
+              "step_output_image"
+            ],
+            "selector_data_kind": {
+              "input_image": [
+                "image"
+              ],
+              "step_output_image": [
+                "image"
+              ]
+            }
+          }
+        },
+        "outputs": {
+          "laplacian_variance": {
+            "type": "DynamicOutputDefinition",
+            "kind": [
+              "float"
+            ]
+          }
+        }
+      },
+      "code": {
+        "type": "PythonCode",
+        "run_function_code": "def run(self, image) -> BlockResult:\n    import cv2\n    gray = cv2.cvtColor(image.numpy_image, cv2.COLOR_BGR2GRAY)\n    return {\"laplacian_variance\": float(cv2.Laplacian(gray, cv2.CV_64F).var())}\n"
+      }
+    }
+  ],
+  "metadata": {
+    "ui": {
+      "nodes": {
+        "$inputs": {
+          "x": 0,
+          "y": 55
+        },
+        "$outputs": {
+          "x": 0,
+          "y": 487
+        },
+        "$steps.custom_python_block": {
+          "x": 0,
+          "y": 346
+        }
+      },
+      "edges": [
+        {
+          "source": "$inputs",
+          "target": "$steps.custom_python_block",
+          "inputProperty": "image",
+          "sourceSelector": "image"
+        },
+        {
+          "source": "$steps.custom_python_block",
+          "target": "$outputs",
+          "sourceSelector": "laplacian_variance"
+        }
+      ],
+      "groups": []
+    }
+  }
+}
