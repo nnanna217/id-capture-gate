@@ -1,0 +1,27 @@
+# secrets — ignore before the first commit, not after
+.env
+*.key
+
+# environment
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.pip-install.log
+
+# personal method notes: kept locally, not evidence of anything graded
+prompts.md
+
+# third-party datasets: large, separately licensed, reproducible from source
+midv-500/
+midv-2020/
+data/raw/
+
+# raw captures and video: shot at home, unredacted, and large
+captures/
+my-images/
+*.mp4
+*.mov
+
+# commit redacted stills for the deck only, and keep them small
+# screenshots/ stays tracked — check each one is redacted before adding
