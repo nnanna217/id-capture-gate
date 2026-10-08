@@ -77,3 +77,12 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - **Discrepancy:** hosted run 1015.3089239358211 vs local 1018.3152326527953, a difference of 3.0063 (~0.3%). The block logic is not the cause (local run of the same spec matches the direct computation). Cause not established; suspect image handling in the hosted path (e.g. re-encoding in transit), untested. **Consequence:** tune blur thresholds on the local path, since the demo runs locally, and do not mix hosted and local numbers.
 - Quirk: the editor named the step `custom_python_block` and the workflow output `custom_python_block_output`; names are editor defaults, rename before the real build.
 - Renamed in the editor and re-published: step `blur_variance`, workflow output `capture_verdict` (an interim name — it currently carries a float, not a verdict; the real verdict block replaces it). Re-fetched the published spec; names confirmed; local run on `CA01_01_preview.jpg` still 1018.3152326527953. (An intermediate name, `compute_variance_score`, was dropped because "score" clashes with the no-numeric-quality-score rule.)
+
+## 2026-10-08 — Phase 1 start
+
+### 1.1 Specimen card
+
+- The user's own cards (expired debit card, loyalty card, Costco card) all carry the real name and PAN, some a signature. **Rejected as capture subjects**: real personal data, the demo is live on a video call, and redacted stills are meant to be committed. (The reasoning is a candidate for `DECISIONS.md` only if it turns into a choice between real alternatives — it is a constraint, not yet a decision.)
+- No printer, glossy paper or laminating pouch at home. Plan: print at a Staples (Regina) and laminate or sleeve in gloss, because glare is a labelled class and matte paper barely produces it.
+- `generate_mock_cards.py` → `cards/mock-cards-letter.pdf` (US Letter, two layouts at true size 85.6 × 54 mm, 300 dpi): an ID-style card (photo silhouette, text block) and a bank-style card (chip, 16 zeros, name). All invented data; SPECIMEN text sits outside the data zone. First render had the bank number nearly touching the card edge; font reduced 84 → 74.
+- `capture_frames.py` written (condition keys 1–7, manifest CSV, resolution recorded per frame). **Not yet run:** camera permission belongs to the user's Terminal; a probe from the build shell returned `isOpened() == False` for indices 0–2, which is expected, not a camera fault.
