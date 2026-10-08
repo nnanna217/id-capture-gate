@@ -9,16 +9,16 @@
   "steps": [
     {
       "type": "LaplacianVarianceV2",
-      "name": "custom_python_block",
+      "name": "blur_variance",
       "image": "$inputs.image"
     }
   ],
   "outputs": [
     {
       "type": "JsonField",
-      "name": "custom_python_block_output",
+      "name": "capture_verdict",
       "coordinates_system": "own",
-      "selector": "$steps.custom_python_block.laplacian_variance"
+      "selector": "$steps.blur_variance.laplacian_variance"
     }
   ],
   "dynamic_blocks_definitions": [
@@ -71,7 +71,7 @@
           "x": 0,
           "y": 487
         },
-        "$steps.custom_python_block": {
+        "$steps.blur_variance": {
           "x": 0,
           "y": 346
         }
@@ -79,12 +79,12 @@
       "edges": [
         {
           "source": "$inputs",
-          "target": "$steps.custom_python_block",
+          "target": "$steps.blur_variance",
           "inputProperty": "image",
           "sourceSelector": "image"
         },
         {
-          "source": "$steps.custom_python_block",
+          "source": "$steps.blur_variance",
           "target": "$outputs",
           "sourceSelector": "laplacian_variance"
         }
