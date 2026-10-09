@@ -120,3 +120,11 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - **Untested:** using MIDV ground truth to pre-label `data_zone`. The per-frame quads exist for the dataset's 301 annotated TIFF frames, not for the arbitrary video frames I sampled, so seeding labels would need either those TIFFs (≈ 900 MB to extract) or a homography from the template.
 - **Consequence of D-03 worth stating once:** the portrait photo is not gated by this design, because face matching is out of scope. A real deployment that feeds face matching would need its own photo-zone check.
 - Fallback already in the plan if the logic overruns: drop `data_zone` and test glare against the whole document box.
+
+### 1.6 MIDV-500 readme facts that change earlier statements (2026-10-09)
+
+- Videos were shot on **two devices: `A` = Apple iPhone 5, `S` = Samsung Galaxy S3 (GT-I9300)** (not just "two smartphones"). Each document image was **printed on photo paper with a laser colour printer and laminated with glossy film** — the same recipe as the Staples plan for the mock cards; this is the likely source of the specular highlights seen in the keyboard frames.
+- The 301 TIFFs = one template image + **30 frames per video from the first 3 seconds only, split at 10 fps** (`ffmpeg -r 10 -q:v 1`). Consecutive frames 0.1 s apart. My 60 video frames were sampled from the middle 80% of the full 4–7 s videos, so they overlap with the TIFF time window only partly.
+- Per-frame ground truth is **only the document quad** `{"quad": [[x,y]×4]}` (top-left, top-right, bottom-right, bottom-left). Field quads exist only on the template image. Deriving `data_zone` per frame would need a homography from the template rectangle to each frame's quad: **not tried**.
+- TIFF counts from the archive listing: 30 × 10 videos = 300 frames + 1 template, 907,479,464 bytes in total (≈ 3 MB each).
+- User review of D-02 and D-03 parked for later.
