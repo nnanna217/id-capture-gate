@@ -104,3 +104,11 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Tested on one JPG and one HEIC made with `sips` from a MIDV frame: both converted, manifest correct. **Untested:** EXIF rotation and the downscale from a real phone photo.
 - Open question this raises (not decided): training on phone **stills** vs the demo's live path. If the demo uses the iPhone via Continuity Camera or the MacBook webcam, the training photos came from a different pipeline (photo mode, HEIC/HDR, higher resolution). Candidate `DECISIONS.md` entry once decided.
 - `capture_frames.py` (webcam path) is kept for checking the live path; its manifest has 5 columns, the ingest manifest 7 — no test frames were saved, so there is nothing to clear; if the webcam script is ever used for real frames, keep its 5-column manifest separate from the ingest one.
+
+### 1.4 Phone ingest tested on real photos; camera choice
+
+- Test batch of 3 iPhone HEIC photos (`IMG_3272–3274.HEIC`, 3024 × 4032) ingested as `--condition good --card id` → `captures/good/id-good-001..003.jpg`, **1440 × 1920** each (long edge 1920, ratio 0.476). Downscale and portrait orientation confirmed from the printed sizes; **visual orientation not yet confirmed by the user**.
+- The printed mock cards do not exist yet (no printer; Staples visit pending), so the subject of these three frames is something else. **To check with the user: if it was a real card, delete the three frames.**
+- User will use the **phone on Thursday** → `DECISIONS.md` D-01.
+- **Risk to test on Tuesday (not yet tried):** Zoom and the OpenCV/Inference pipeline both using the Continuity Camera feed during the demo; whether macOS allows both to open it at once is unverified.
+- User raised building a simple mobile app to show the guidance on-device. Declined as out of scope (mobile app is on the freeze list); recorded as a "what I'd do next" item.
