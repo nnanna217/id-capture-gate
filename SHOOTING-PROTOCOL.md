@@ -16,15 +16,15 @@ Target: **112 frames**, split evenly across the two printed mock cards (`id` and
 
 ## Phone settings
 
-Photo mode. **Live Photo off** (AirDrop sends an extra `.MOV` per photo otherwise). Portrait mode off, flash off, no edits or crops. Tap to focus unless the condition says otherwise.
+Photo mode. **Live Photo off** (AirDrop sends an extra `.MOV` per photo otherwise). Portrait mode off, no edits or crops. Flash off **except for `glare_direct` and `glare_oblique`** (see below). Tap to focus unless the condition says otherwise.
 
 Orientation: shoot mostly **landscape**, with about a quarter in portrait. I don't yet know whether the Continuity Camera feed is landscape, so this is a hedge, not a measured choice.
 
 ## Condition notes
 
-**good.** Vary rotation (about −30° to +30°), distance (card fills roughly a third to two thirds of the width), background (desk, wood table, kitchen counter, a dark keyboard-like surface) and light (daylight, lamp). The point is variety in everything except the condition.
+**good.** Keep other cards out of frame. Vary rotation (about −30° to +30°), distance (card fills roughly a third to two thirds of the width), background (desk, wood table, kitchen counter, a dark keyboard-like surface) and light (daylight, lamp). The point is variety in everything except the condition.
 
-**glare_direct.** Tilt the card toward a window or lamp until a bright patch lands on the text block. Vary the size, from a small spot to most of the block. **About 3 of 7 per card should have the glare on the photo, border or blank area but not on the text.** Those are the negatives for the intersection test.
+**glare_direct.** Tilt the card toward a window or lamp until a bright patch lands on the text block. If the card surface is matte, use the phone **flash** or a second phone's torch at a low angle and move the reflection onto the text. Fill about half the frame width or more. Check each shot on the phone: if you can't see a bright patch on the card, retake it. Vary the size, from a small spot to most of the block. **About 3 of 7 per card should have the glare on the photo, border or blank area but not on the text.** Those are the negatives for the intersection test.
 
 **glare_oblique.** Hold the card at a shallow angle to the light so the glare is a band across the card. Vary the angle and which part of the card it crosses.
 
@@ -49,3 +49,7 @@ cd /Users/nnannaeze/Personal/capture-gate && ./.venv/bin/python ingest_phone_pho
 ```
 
 Conditions: `good`, `glare_direct`, `glare_oblique`, `obstruction`, `partial`, `blur`, `lowlight`. Cards: `id`, `bank`.
+
+## Labelling note
+
+The card is laminated in a clear pouch with a margin. `document` follows the printed card edge, not the pouch.

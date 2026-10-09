@@ -47,7 +47,9 @@ def main() -> None:
         raise SystemExit(f"no photos found in {a.src}")
     dest = ROOT / a.condition
     dest.mkdir(parents=True, exist_ok=True)
-    n = len(list(dest.glob(f"{a.card}-{a.condition}-*.jpg")))
+    # next number = highest existing + 1 (counting files would overwrite after any deletion)
+    nums = [int(f.stem.rsplit("-", 1)[1]) for f in dest.glob(f"{a.card}-{a.condition}-*.jpg")]
+    n = max(nums, default=0)
     new = not MANIFEST.exists()
     with MANIFEST.open("a", newline="") as fh:
         w = csv.writer(fh)
