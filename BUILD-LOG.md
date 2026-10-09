@@ -96,3 +96,11 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Looked at a contact sheet of 20 of them. Observed, not measured: some keyboard-condition frames show specular highlights on the card; the hand condition has fingers at the card edge/corner; some partial-condition frames cut the card at the frame edge. So MIDV is not glare-free, contrary to the plan's expectation; none of this is labelled yet and no counts are claimed.
 - **Mismatches to remember:** MIDV is portrait 1080×1920, the webcam is landscape; and all 60 frames are **one document design** (an Albanian ID), so the model could learn that one card's appearance. Both are reasons MIDV stays augmentation.
 - Free disk after this step: 14 GiB (it had read 11 GiB earlier; not investigated).
+
+### 1.3 Capture UX — viewfinder on the phone, not the Mac
+
+- User ran `capture_frames.py`: macOS **Continuity Camera** exposed the iPhone as the webcam (OpenCV index 0), and the live preview opened on the Mac (in the VS Code terminal window), while the user was holding the card in front of the phone — hard to frame and centre. (The three-frame resolution check was **not** reported; the actual Continuity Camera resolution is still unknown.)
+- Change: shoot with the phone's native Camera app (live viewfinder and shutter on the phone), AirDrop each batch to the Mac, then `ingest_phone_photos.py --src <dir> --condition <c> --card id|bank` converts HEIC with `sips`, applies EXIF orientation, downsizes to a 1920 px long edge, re-encodes JPEG (drops EXIF incl. GPS) and appends `captures/manifest.csv` (file, condition, width, height, timestamp, card, source).
+- Tested on one JPG and one HEIC made with `sips` from a MIDV frame: both converted, manifest correct. **Untested:** EXIF rotation and the downscale from a real phone photo.
+- Open question this raises (not decided): training on phone **stills** vs the demo's live path. If the demo uses the iPhone via Continuity Camera or the MacBook webcam, the training photos came from a different pipeline (photo mode, HEIC/HDR, higher resolution). Candidate `DECISIONS.md` entry once decided.
+- `capture_frames.py` (webcam path) is kept for checking the live path; its manifest has 5 columns, the ingest manifest 7 — delete test frames (`rm -rf captures`) before ingesting real ones.
