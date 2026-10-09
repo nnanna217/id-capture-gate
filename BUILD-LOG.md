@@ -145,3 +145,10 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Orientation: mostly landscape, about a quarter portrait — a hedge, since whether the Continuity Camera feed is landscape is **unverified**.
 - Deliberate negatives built in: about 3 of 7 glare frames per card have glare off the text block; about 5 of 13 obstruction frames per card have fingers on the edge but not over the text. These test that the intersection logic does not fire on every glare or finger.
 - The printed cards still do not exist (Staples visit pending); no frames shot yet beyond the 3 test frames.
+
+## 2026-10-09 — Shoot, session 1 (ID card)
+
+- Batch `good`, card `id`: 16 new frames ingested (`IMG_3275–3281`, `3284–3292`; `3282–3283` not ingested) → `id-good-004..019`. Frames `001–003` are the earlier test frames from before the cards were printed; **their subject was never confirmed** (open question to the user). Orientation of all 19: 10 portrait, 9 landscape. 4032×3024 → 1920×1440; 3024×4032 → 1440×1920.
+- Batch `glare_direct`, card `id`: 11 frames (`IMG_3306–3312`, `3322–3325`) → `id-glare_direct-001..011`; 7 portrait, 4 landscape. Over the per-card target of 7 by 4.
+- **Whole-frame Laplacian variance, measured:** `good` (19 frames) min 189.5 / median 528.6 / max 1602.4; `glare_direct` (11) min 166.0 / median 221.6 / max 398.8. Whether every `good` frame is sharp was not checked by eye, but if so, the whole-frame value spans about 8.5× (1602.4 / 189.5) from scene texture alone → the blur check probably has to be computed **inside the `data_zone` (or `document`) crop, not on the whole frame.** Candidate `DECISIONS.md` entry once tested on the labelled crops. No inference drawn from glare frames being lower (backgrounds differ).
+- Shoot-session set-ups were not yet written down by the user (requested).
