@@ -161,3 +161,10 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Protocol amended: flash or a second phone's torch allowed for glare frames; card to fill about half the frame width; check on the phone that a patch is visible.
 - `sync_manifest.py` added: removes manifest rows for deleted frames. Run at this point: 26 rows, 26 files (good 15, glare_direct 11), 0 removed. (`id-good-004` is already gone from disk and the manifest.)
 - Advice given on the 11 `glare_direct` frames (from thumbnails, not measured): keep 005, 006, 007, 010 (patch on card or borderline) and a few clean-card frames as negatives; delete one of the near-identical 008/009 and 001 (small card, no distinct content). Final pruning to be decided after labelling, when it is clear which frames carry a `glare` label.
+
+### Session 1 — glare reshoot review (2026-10-09)
+
+- Deletions checked: `glare_direct-001` deleted (manifest was 41 rows vs 40 files) → `sync_manifest.py` removed the row → 40 rows, 40 files, nothing orphaned either way. `id-good-004` already gone. `008` and `009` (near-duplicates) both still present; user to decide.
+- New batch `IMG_3348–3368` (15 frames, all 3024×4032 → 1440×1920) → `id-glare_direct-012..026`. Counts now: `good` 15, `glare_direct` 25, all card `id`.
+- Visual review (thumbnails, eyeball, not measured): **017–026 (10 frames) show a large saturated flash blob over the text block, text beneath washed out** — the clear `glare_over_data_zone` positives. 013–015 small spots near the text; 016 a sheen along the edge; 012 clean. **Problems:** (1) blobs are all round, saturated and similar in size and position — flash glare only; streaks/bands needed (`glare_oblique`); (2) about 11 of 15 new frames are hand-held vs about 2 of 15 `good` → "hand ⇒ glare" confound; (3) only about 3 set-ups across the 10 clear frames (017–020, 021–024, 025–026) → near-duplicates; (4) no glare-off-text frames yet.
+- Gate 3 estimate (eyeball, not a count): about 14–18 usable glare instances so far vs ≥ 25 needed across both cards.
