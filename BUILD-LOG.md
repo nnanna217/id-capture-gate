@@ -88,3 +88,11 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - `capture_frames.py` written (condition keys 1–7, manifest CSV, resolution recorded per frame). **Not yet run:** camera permission belongs to the user's Terminal; a probe from the build shell returned `isOpened() == False` for indices 0–2, which is expected, not a camera fault.
 - The raster PDF (239,708 bytes) was too large to attach to an email by hand (319,613 base64 chars), so `generate_mock_cards_pdf.py` now builds the printable page as a **vector PDF with reportlab 5.0.1: 2,897 bytes**, same layout, sharper at actual size. The raster script no longer writes the PDF (it still writes the PNGs). Rendered the PDF to check it before sending. Emailed to the user's own address with the Staples checklist.
 - User decision: shoot **both** cards, split across conditions.
+
+### 1.2 MIDV-500 subset (augmentation)
+
+- Extracted only the 10 videos from `01_alb_id.zip` (≈ 110 MB, not the 301 TIFFs). Each 130–213 frames (1,607 total), ≈ 30 fps, **1080 × 1920 portrait**. Conditions TA/TS table, KA/KS keyboard, HA/HS hand, PA/PS partial, CA/CS clutter (A = `.MOV`, S = `.mp4`, two phones).
+- `extract_midv_frames.py`: 6 evenly spaced frames from the middle 80% of each video → **60 frames, 25 MB** in `midv-500/frames/` (gitignored), with `manifest.csv`. **Clutter (CA, CS; 12 frames) went to `heldout_clutter/` from the start** — the plan's generalisation check; never trained on.
+- Looked at a contact sheet of 20 of them. Observed, not measured: some keyboard-condition frames show specular highlights on the card; the hand condition has fingers at the card edge/corner; some partial-condition frames cut the card at the frame edge. So MIDV is not glare-free, contrary to the plan's expectation; none of this is labelled yet and no counts are claimed.
+- **Mismatches to remember:** MIDV is portrait 1080×1920, the webcam is landscape; and all 60 frames are **one document design** (an Albanian ID), so the model could learn that one card's appearance. Both are reasons MIDV stays augmentation.
+- Free disk after this step: 14 GiB (it had read 11 GiB earlier; not investigated).
