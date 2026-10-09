@@ -128,3 +128,13 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Per-frame ground truth is **only the document quad** `{"quad": [[x,y]×4]}` (top-left, top-right, bottom-right, bottom-left). Field quads exist only on the template image. Deriving `data_zone` per frame would need a homography from the template rectangle to each frame's quad: **not tried**.
 - TIFF counts from the archive listing: 30 × 10 videos = 300 frames + 1 template, 907,479,464 bytes in total (≈ 3 MB each).
 - User review of D-02 and D-03 parked for later.
+
+### 1.7 MIDV TIFF subset with ground-truth labels (2026-10-09)
+
+- User chose the 6-per-video TIFF plan. `midv_to_labels.py` reads the zip with `zipfile` (members read as bytes, written to paths chosen by the script), takes TIFF frames 1, 7, 12, 18, 24, 30 of each of the 10 videos → **60 frames**, converted to JPEG q95, in `midv-500/tiff/<condition>/` (24 MB). Clutter (CA, CS; 12 frames) is in `heldout_clutter/`. Labels in neutral polygon JSON (`midv-500/tiff/labels.json`), not a training format yet: the detection-vs-segmentation decision is open.
+- **Output: 60 `document` polygons, 58 `data_zone` polygons, 17 clipped by the frame edge.** Two frames (`partial/midv-PS01_01`, `PS01_07`) have a `document` but no `data_zone` inside the frame: the card is almost entirely out of view.
+- Template is 1040 × 653 with 11 text fields; the text-field bounding rectangle is x 333–904, y 122–496 in template coordinates.
+- **First version was wrong, found by drawing the labels on the frames:** `data_zone` was a convex hull of the field boxes, which gives a sloping trapezoid (its top edge cut diagonally from the short first field to the right column) — it contradicted D-03 ("one rectangle"). Replaced with the projected bounding rectangle. Re-checked on 12 overlaid frames across keyboard, hand, clutter and partial: document polygon hugs the card, rectangle sits on the text block, alignment holds under rotation. **Only those 12 of 60 were looked at.**
+- Observed, not counted: several frames show strong specular glare across the card (e.g. a white band in the partial condition); the hand condition has fingers at the card edge. Neither is labelled. `glare` and `obstruction` are not in MIDV's ground truth and will be labelled by hand.
+- Caveat on D-03 evidence: the rectangle includes an empty area in the top-right of the text block (the right column starts lower than the left), so it is "all text fields", not "tight to every character".
+- The 60 video frames from 1.2 (`midv-500/frames/`) are now unused, kept on disk, not deleted.
