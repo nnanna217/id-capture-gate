@@ -25,3 +25,6 @@ my-images/
 
 # commit redacted stills for the deck only, and keep them small
 # screenshots/ stays tracked — check each one is redacted before adding
+
+# originals kept before privacy crops: never committed
+private-backup/
