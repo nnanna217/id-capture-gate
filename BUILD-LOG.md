@@ -116,7 +116,7 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 ### 1.5 Taxonomy and data_zone drafted (2026-10-08)
 
 - `DECISIONS.md` D-02 (no `bad_capture`/`blurry` class) and D-03 (`data_zone` = printed text block). Both drafts are mine from the existing evidence; the user has not yet reviewed or changed them.
-- Checked MIDV's template ground truth (`01_alb_id.json`): `field01`–`field11` are text; `photo` and `signature` are separate keys. The text fields span two columns (x 333–904, y 122–496 on the 1,011 × 638-ish template), so a single enclosing rectangle includes a gap between the columns. Accepted for now.
+- Checked MIDV's template ground truth (`01_alb_id.json`): `field01`–`field11` are text; `photo` and `signature` are separate keys. The text fields span two columns (template coordinates x 333–904, y 122–496; the template image size was not checked), so a single enclosing rectangle includes a gap between the columns. Accepted for now.
 - **Untested:** using MIDV ground truth to pre-label `data_zone`. The per-frame quads exist for the dataset's 301 annotated TIFF frames, not for the arbitrary video frames I sampled, so seeding labels would need either those TIFFs (≈ 900 MB to extract) or a homography from the template.
 - **Consequence of D-03 worth stating once:** the portrait photo is not gated by this design, because face matching is out of scope. A real deployment that feeds face matching would need its own photo-zone check.
 - Fallback already in the plan if the logic overruns: drop `data_zone` and test glare against the whole document box.
