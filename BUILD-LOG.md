@@ -138,3 +138,10 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Observed, not counted: several frames show strong specular glare across the card (e.g. a white band in the partial condition); the hand condition has fingers at the card edge. Neither is labelled. `glare` and `obstruction` are not in MIDV's ground truth and will be labelled by hand.
 - Caveat on D-03 evidence: the rectangle includes an empty area in the top-right of the text block (the right column starts lower than the left), so it is "all text fields", not "tight to every character".
 - The 60 video frames from 1.2 (`midv-500/frames/`) are now unused, kept on disk, not deleted.
+
+### 1.8 Shooting protocol (2026-10-09)
+
+- `SHOOTING-PROTOCOL.md` written: **112 frames** split evenly across the `id` and `bank` mock cards — good 30, glare_direct 14, glare_oblique 14, obstruction 26, partial 10, blur 10, lowlight 8. Obstruction raised from 22 to 26 because the Gate 3 floor is ≥ 20 instances and 22 leaves no margin if some frames do not label cleanly.
+- Orientation: mostly landscape, about a quarter portrait — a hedge, since whether the Continuity Camera feed is landscape is **unverified**.
+- Deliberate negatives built in: about 3 of 7 glare frames per card have glare off the text block; about 5 of 13 obstruction frames per card have fingers on the edge but not over the text. These test that the intersection logic does not fire on every glare or finger.
+- The printed cards still do not exist (Staples visit pending); no frames shot yet beyond the 3 test frames.
