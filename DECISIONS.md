@@ -29,3 +29,15 @@
 **Why:** darkness lowers the sharpness measure, so without its own reason a dark frame is reported as blurred and the user is told to hold still when the problem is light.
 **Rejected:** treating legible dark frames as usable with no reason, because the sharpness check would still misread them and the user gets no guidance.
 **Evidence:** whole-frame mean grey for the four `lowlight` frames is 33.3–41.7 against 78.1 for the darkest other frame; their whole-frame Laplacian variance (median 46.8) sits below the blur batch (59.8–86.6). Not yet tested: the check on the `data_zone` alone, and any threshold.
+
+## D-06 · Instance segmentation with polygon labels, not box detection
+**Decision:** an Instance Segmentation project, polygon labels for all four classes, RF-DETR Seg Nano as the first model.
+**Why:** the glare test depends on shape, and the box around a thin diagonal streak covers far more than the streak.
+**Rejected:** object detection with boxes, because a box-overlap test would flag captures whose text is actually clear; polygons convert to boxes on the platform, so the choice can be reversed without relabelling.
+**Evidence:** on the M3, Nano detection ran at 37 ms p50 and Seg Nano at 56 ms (about 18 fps), measured without masks in the output; two oblique-glare frames keep their streaks at 312 × 312. Not yet tested: Seg Nano training on this account, and latency with real masks.
+
+## D-07 · Train at the model's native input size, not 640
+**Decision:** the dataset version is resized to 312 × 312 (stretch), the Seg Nano default, with no larger intermediate size.
+**Why:** a larger version means a double resize and more pixels per frame for no gain the model was designed to use.
+**Rejected:** 640 × 640, which the PPE build used against the platform's own 384 warning.
+**Evidence:** the PPE model ran at 2.22 fps at 640 against a native 384; the cause was not isolated, so this is a precaution and not a measured effect.

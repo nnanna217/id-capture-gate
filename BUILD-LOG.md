@@ -258,3 +258,6 @@ COCO-pretrained checkpoints (same architecture and input size as what would be t
 
 ### Does thin glare survive the resize? (looked at two bank oblique frames, 003 and 007, 1440×1920 stretched to 384² and 312²)
 Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretched, as in the PPE build). The streaks and the number text stay clearly visible at both sizes in these two frames. **Only two frames checked**; the thinnest streaks in the set are not verified.
+
+- User agreed: instance segmentation, start at Seg Nano → `DECISIONS.md` D-06 (project type) and D-07 (native 312 input). Both are my drafts from the measured evidence; not yet reviewed by the user. **`DECISIONS.md` now holds 7 of its 10 entries**; the three left are earmarked for augmentation (rotation included), the reason-code precedence order, and the out-of-scope boundary.
+- Before any upload: confirm the Roboflow project is **private**. The raw frames show the user's home and hands, and a public project would publish them. Plan visibility not yet checked.
