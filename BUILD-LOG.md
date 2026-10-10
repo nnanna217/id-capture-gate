@@ -227,3 +227,10 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - **013 is glare + blur + partial in one frame** → a natural test for the reason-code precedence.
 - Updated bank glare picks: `direct` 001, 004, 005, 010, 012, 013, 015; `oblique` 001, 002, 003, 006, 007, 009, 011 (skip 011 and 014 of the video set: near-duplicates). Own frames labelled about 127.
 - Still to shoot: 4 moderately dim `lowlight` frames (mean grey roughly 50–100 target; a guide, not a guarantee).
+
+### Lowlight gradient added; shoot complete (2026-10-09)
+
+- Four moderately dim bank frames ingested (`bank-lowlight-004..007`, all phone, 1440×1920 or 1920×1440). **Manifest 157 rows = 157 files**, no duplicates, nothing orphaned. Totals: `id` 96, `bank` 61.
+- Mean grey / whole-frame Laplacian variance: 004 54.0 / 34.4; 005 52.5 / 40.6; 006 54.1 / 41.7; 007 58.0 / 35.5. Lowlight levels now: very dark 15.5–18.9 (bank 001–003), dark 33.3–41.7 (id 001–004), dim 52.5–58.0 (bank 004–007). Nothing between 58.0 and the darkest non-lowlight frame (78.1).
+- Visual (eyeball): 004 smeared (looks motion-blurred, slow shutter), 005 and 006 legible, 007 soft; all four dark-blue card on dark carpet (low contrast), same background. **At nearly equal brightness legibility differs (004 at 54.0 smeared, 006 at 54.1 readable) → whole-frame mean grey does not predict legibility; measure on the `data_zone` and consider its contrast.** Dim light also blurs the image, so `too_dark` and `blurred` can fire together (D-05 puts `too_dark` first); the new frames' whole-frame variance (34–42) sits inside the blur batch's range (19.4–86.6).
+- **Own-frame shoot complete: 157 frames.** To label about 127 of them (picks recorded above) plus about 24 MIDV training frames; 12 MIDV Clutter frames held out.
