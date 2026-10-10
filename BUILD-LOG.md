@@ -261,3 +261,4 @@ Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretc
 
 - User agreed: instance segmentation, start at Seg Nano → `DECISIONS.md` D-06 (project type) and D-07 (native 312 input). Both are my drafts from the measured evidence; not yet reviewed by the user. **`DECISIONS.md` now holds 7 of its 10 entries**; the three left are earmarked for augmentation (rotation included), the reason-code precedence order, and the out-of-scope boundary.
 - Before any upload: confirm the Roboflow project is **private**. The raw frames show the user's home and hands, and a public project would publish them. Plan visibility not yet checked.
+- **`DECISIONS.md` hard limit raised from 10 to 15 entries** (user, 2026-10-09). Updated in `interview-prep/roboflow/notes/build-artifacts.md`. It now holds 7 of 15. The note "7 of its 10" above is superseded.
