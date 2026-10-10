@@ -234,3 +234,27 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Mean grey / whole-frame Laplacian variance: 004 54.0 / 34.4; 005 52.5 / 40.6; 006 54.1 / 41.7; 007 58.0 / 35.5. Lowlight levels now: very dark 15.5–18.9 (bank 001–003), dark 33.3–41.7 (id 001–004), dim 52.5–58.0 (bank 004–007). Nothing between 58.0 and the darkest non-lowlight frame (78.1).
 - Visual (eyeball): 004 smeared (looks motion-blurred, slow shutter), 005 and 006 legible, 007 soft; all four dark-blue card on dark carpet (low contrast), same background. **At nearly equal brightness legibility differs (004 at 54.0 smeared, 006 at 54.1 readable) → whole-frame mean grey does not predict legibility; measure on the `data_zone` and consider its contrast.** Dim light also blurs the image, so `too_dark` and `blurred` can fire together (D-05 puts `too_dark` first); the new frames' whole-frame variance (34–42) sits inside the blur batch's range (19.4–86.6).
 - **Own-frame shoot complete: 157 frames.** To label about 127 of them (picks recorded above) plus about 24 MIDV training frames; 12 MIDV Clutter frames held out.
+
+## 2026-10-09 — Detection vs segmentation research
+
+### Platform facts (read from the primary docs; not yet tried in the user's account)
+- Training resolutions (docs table): RF-DETR **Nano 384×384**; Seg **Nano 312×312**, Seg Small 384×384, Medium 432, Large 504, XL 624, 2XL 768.
+- **Instance Segmentation project required** for RF-DETR Segmentation training ("semantic segmentation is not supported"); launched as a **preview on 2 Oct 2025** (changelog). A Roboflow comparison page (secondary) says the full Nano–2XL family came in Jan 2026. **Whether hosted Train offers Seg Nano/Small on this account: unverified** until the project exists.
+- Project type decides accepted annotation formats: detection accepts boxes, polygons and masks (polygons/masks are **converted to boxes automatically**); instance segmentation accepts polygons and masks; boxes in a segmentation project train poorly (Roboflow staff reply). So **polygon labels keep both options open; box labels do not.**
+- Runtime: segmentation checkpoints run on the Serverless API and self-hosted Inference; the Workflows "Instance Segmentation Model" block exists (`roboflow_core/roboflow_instance_segmentation_model@v2`). Hosted-training credit cost for segmentation: not found in the docs.
+- Custom Python block libraries documented: `cv2`, `numpy`, `supervision`, `shapely` → mask/polygon geometry is available inside the block.
+
+### Measured latency on this machine (Apple M3, 16 GB, ONNX Runtime CoreML EP, `inference` 1.7.3, `benchmark_models.py`)
+COCO-pretrained checkpoints (same architecture and input size as what would be trained), image `captures/good/id-good-005.jpg` (1920×1440), model.infer incl. pre/post-processing, 3 warm-ups then 20 timed runs:
+
+| model | input | p50 | p95 | min / max | fps at p50 | CoreML nodes / partitions |
+|---|---|---|---|---|---|---|
+| rfdetr-nano (detection) | 384 | **37 ms** | 38 | 36 / 41 | 26.84 | 778 of 822 / 13 |
+| rfdetr-seg-nano | 312 | **56 ms** | 57 | 54 / 58 | 17.95 | 1077 of 1109 / 12 |
+| rfdetr-seg-small | 384 | **80 ms** | 84 | 77 / 84 | 12.57 | 997 of 1060 / 17 |
+
+- **Caveats:** zero detections on this image for all three, so **mask post-processing was not exercised** (seg latency with real masks is probably higher; untested). Excludes camera, drawing and Workflow/custom-block overhead.
+- **Not comparable with the PPE build's 1.88–2.22 fps:** that run was at 640 px input, through a pipeline with camera and drawing, on `inference` 1.6.2 where CoreML took 725 of 900 nodes in 104 partitions; this run is 1.7.3 with 12–17 partitions. Not attributing the difference to a cause.
+
+### Does thin glare survive the resize? (looked at two bank oblique frames, 003 and 007, 1440×1920 stretched to 384² and 312²)
+Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretched, as in the PPE build). The streaks and the number text stay clearly visible at both sizes in these two frames. **Only two frames checked**; the thinnest streaks in the set are not verified.
