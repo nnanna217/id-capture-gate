@@ -41,3 +41,9 @@
 **Why:** a larger version means a double resize and more pixels per frame for no gain the model was designed to use.
 **Rejected:** 640 × 640, which the PPE build used against the platform's own 384 warning.
 **Evidence:** the PPE model ran at 2.22 fps at 640 against a native 384; the cause was not isolated, so this is a precaution and not a measured effect.
+
+## D-08 · MIDV-500 stays out of the Roboflow project; it is the held-out test set
+**Decision:** only my own frames go into the Roboflow project; MIDV-500 is kept local and used to evaluate the trained model on a condition it never saw.
+**Why:** MIDV is CC BY-SA 2.5, the project is public, and I could not confirm a compatible ShareAlike licence on the platform.
+**Rejected:** uploading MIDV as augmentation, because it would redistribute a share-alike dataset under a licence that may not satisfy its terms.
+**Evidence:** `license.txt` on the MIDV server names CC BY-SA 2.5; the licence list I found for public Roboflow projects (third-party, unverified) has no ShareAlike entry; the free plan only offers public projects.

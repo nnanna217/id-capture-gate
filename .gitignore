@@ -28,3 +28,6 @@ my-images/
 
 # originals kept before privacy crops: never committed
 private-backup/
+
+# files staged for upload to Roboflow: copies of raw captures, never committed
+upload/
