@@ -28,18 +28,26 @@ LABELMAP = {str(i): c for i, c in enumerate(CLASSES)}
 
 
 def image_ids() -> dict:
-    ids, off = {}, 0
-    while True:
-        r = requests.post(f"https://api.roboflow.com/{WS}/{PROJECT}/search", params={"api_key": KEY},
-                          json={"offset": off, "limit": 100, "fields": ["id", "name"]}, timeout=60)
-        if r.status_code != 200:
-            sys.exit(f"search failed: HTTP {r.status_code}")
-        d = r.json()
-        for it in d.get("results", []):
-            ids[it["name"]] = it["id"]
-        off += len(d.get("results", []))
-        if not d.get("results") or off >= d.get("total", 0):
+    """All image name -> id pairs. Offset paging can skip an image if the result order shifts between pages (seen once:
+    one of 131 went missing), so keep fetching until the unique count equals the reported total."""
+    for attempt in range(6):
+        ids, off, total = {}, 0, None
+        while True:
+            r = requests.post(f"https://api.roboflow.com/{WS}/{PROJECT}/search", params={"api_key": KEY},
+                              json={"offset": off, "limit": 100, "fields": ["id", "name"]}, timeout=60)
+            if r.status_code != 200:
+                sys.exit(f"search failed: HTTP {r.status_code}")
+            d = r.json()
+            total = d.get("total", 0)
+            for it in d.get("results", []):
+                ids[it["name"]] = it["id"]
+            off += len(d.get("results", []))
+            if not d.get("results") or off >= total:
+                break
+        if len(ids) == total:
             return ids
+        print(f"attempt {attempt + 1}: got {len(ids)} unique names but the project reports {total}; retrying")
+    sys.exit(f"could not fetch all {total} image ids after 6 attempts (got {len(ids)})")
 
 
 def yolo_poly(label: dict) -> str:
