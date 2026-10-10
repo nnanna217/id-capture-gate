@@ -42,11 +42,11 @@
 **Rejected:** 640 × 640, which the PPE build used against the platform's own 384 warning.
 **Evidence:** the PPE model ran at 2.22 fps at 640 against a native 384; the cause was not isolated, so this is a precaution and not a measured effect.
 
-## D-08 · MIDV-500 stays out of the Roboflow project; it is the held-out test set
-**Decision:** only my own frames go into the Roboflow project; MIDV-500 is kept local and used to evaluate the trained model on a condition it never saw.
-**Why:** MIDV is CC BY-SA 2.5, the project is public, and I could not confirm a compatible ShareAlike licence on the platform.
-**Rejected:** uploading MIDV as augmentation, because it would redistribute a share-alike dataset under a licence that may not satisfy its terms.
-**Evidence:** `license.txt` on the MIDV server names CC BY-SA 2.5; the licence list I found for public Roboflow projects (third-party, unverified) has no ShareAlike entry; the free plan only offers public projects.
+## D-08 · No public dataset goes into the Roboflow project
+**Decision:** only my own frames are uploaded; MIDV-500 stays local as the held-out test set, and two Universe ID-card sets were considered and not used.
+**Why:** the project is public, so the licence and provenance of anything uploaded must be clean, and images labelled for only some classes teach the model that the others are absent.
+**Rejected:** uploading MIDV-500 (CC BY-SA 2.5, no compatible ShareAlike option found) and the Universe sets `cccd` (134 images) and `cv` (110 images), whose pages have no description or source and whose class names point at national ID cards.
+**Evidence:** `license.txt` on the MIDV server; both Universe pages read on 2026-10-09 (instance segmentation, CC BY 4.0, classes `id-card`/`tlu-card` and `car`/`back`/`addres`/`drive`/`iraq id card`); I did not open their images.
 
 ## D-09 · Split by capture group, not at random
 **Decision:** train, valid and test are assigned a whole capture group at a time, where a group is a run of back-to-back shots from one set-up.
