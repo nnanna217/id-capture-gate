@@ -320,3 +320,9 @@ Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretc
 - Still unconfirmed: whether a second upload to an already-annotated image conflicts (409) or replaces — the `--all` run will include `id-good-021` again and show which; whether annotation uploads consume credits (not stated in the docs).
 
 - **`--all` import aborted before sending anything** with `not found on the platform or in the label file: ['id-glare_oblique-003.jpg']`. Cause checked: the platform still holds all 131 images (92/26/13) including that one; **my image-id lookup paged with offsets and skipped it** (result order can shift between pages). Fixed `import_template_labels.py`: it now retries until the number of unique names equals the project's reported total (up to 6 attempts). Nothing was written by the failed run; only `id-good-021` carries an annotation.
+
+### Template labels imported and verified (2026-10-10)
+
+- User ran `import_template_labels.py --all`: **119 ok, 1 skipped, 0 failed**. The skipped image was `id-good-021` (already annotated from the one-image test) → **a repeat upload to an annotated image is blocked, not replaced** ("already annotated, skipped").
+- **Verified against the platform (API, every annotated image's detail record, not the script's own count):** 131 of 131 images fetched; 120 images with annotations = exactly the 120 expected; 0 annotated but not expected; class counts **document 120, data_zone 120**; shape type **polygon 240**; 0 images whose platform labels differ from `labels/template-labels.json`. (Compared class lists per image, not point coordinates, except the earlier one-image read-back.)
+- Remaining unannotated: the 11 frames in `labels/manual-needed.json` (id-blur-004/005/006, bank-blur-001/002/003/004, bank-lowlight-002/003/004/007). Next: those 11 by hand; SAM 3 trial for `glare` / `obstruction` (first on 2 frames to confirm Auto Label keeps the imported labels); then the skim of all 131 frames.
