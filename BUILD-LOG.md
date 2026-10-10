@@ -334,3 +334,12 @@ Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretc
 - The user did not do any extra "approval" beyond approving each frame; Review Mode is locked behind the plan.
 - Next: classes `glare` and `obstruction`; SAM 3 trial; skim and label.
 - User asked whether fingers on the card but not over the text should be labelled `obstruction`. Answer: yes, if they cover any printed surface (title band, photo area, footer); the verdict only tests overlap with the `data_zone`, so off-text obstruction is harmless and is the needed negative. Not labelled: behind the card, on the pouch margin, outside the card. D-04 wording made explicit.
+
+### Glare and obstruction labelled — platform check (2026-10-10)
+
+- User labelled `glare` and `obstruction`; the Analytics page did not change because it is a **cached snapshot** ("Generated on … 9:42 am", with a Regenerate button), not live.
+- **Live counts from the platform (API, every image's record):** 131 of 131 images; `document` 131, `data_zone` 131 (exactly one each per image), **`glare` 58 instances on 45 images, `obstruction` 28 instances on 25 images**. By split: train glare 42 / obstruction 21; valid 11 / 5; test 5 / 2. Both exceed the Gate 3 floors (≥ 25 glare, ≥ 20 obstruction instances). Max instances per image: glare 3, obstruction 2.
+- By condition: glare on 27 `glare_direct`, 17 `glare_oblique`, 1 `partial` image; obstruction on 23 `obstruction` and 2 `glare_oblique` images; **none on `good`**. Glare-condition frames with **no glare label: `bank-glare_oblique-003`, `id-glare_oblique-009`** (to check; my recollection is a clear bright streak on the former). Obstruction-condition frames with no obstruction label: 0.
+- **Shape types: 286 polygons + 62 masks.** `glare` 37 mask + 21 polygon; `obstruction` 24 mask + 4 polygon; `document` 130 polygon + **1 mask (`id-glare_direct-010`)**; `data_zone` 131 polygon. 53 images carry masks (raster shapes with an `area`, e.g. from SAM-based tools). The docs say instance segmentation accepts polygons or masks; how they are converted at version generation is untested here.
+- **Tiny label:** `id-glare_direct-016` has three glare shapes, one only 34 × 26 px (area 725) — possibly a stray click or a legitimate specular speck; not checked by eye.
+- Not known: whether the user skimmed the priority 3–4 frames (good, partial, blur, lowlight) for incidental glare and fingers; the counts suggest few or none were found there.
