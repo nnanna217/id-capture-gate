@@ -47,3 +47,9 @@
 **Why:** MIDV is CC BY-SA 2.5, the project is public, and I could not confirm a compatible ShareAlike licence on the platform.
 **Rejected:** uploading MIDV as augmentation, because it would redistribute a share-alike dataset under a licence that may not satisfy its terms.
 **Evidence:** `license.txt` on the MIDV server names CC BY-SA 2.5; the licence list I found for public Roboflow projects (third-party, unverified) has no ShareAlike entry; the free plan only offers public projects.
+
+## D-09 · Split by capture group, not at random
+**Decision:** train, valid and test are assigned a whole capture group at a time, where a group is a run of back-to-back shots from one set-up.
+**Why:** near-duplicate shots on both sides of a split make the validation score look better than the model is.
+**Rejected:** Roboflow's default random 70/20/10 split, because with this many same-set-up shots it puts copies of one shot in train and validation.
+**Evidence:** nearest-training-frame distance for held-out frames has a median of 0.566 with the group split against 0.292 for random splits (20 seeds); the group split still has leakage through shared backgrounds, which only the MIDV held-out set tests.
