@@ -1,7 +1,8 @@
 """Take frames from a phone video into the dataset (same naming/manifest as ingest_phone_photos.py).
 
 usage: python extract_video_frames.py --src ~/Downloads/glare-video.MOV --condition glare_direct --card bank \
-           [--start 0] [--end 3] [--n 4] [--window 4] [--max-edge 1920]
+           [--times 0.02 0.3 | --start 0 --end 3 --n 4] [--window 4] [--max-edge 1920]
+  for a specific moment (e.g. the glare peak) use --times T --window 0: no drift to a 'sharper' frame
 
 - picks --n evenly spaced moments between --start and --end seconds
 - for each, looks +---window frames around it and keeps the sharpest (whole-frame Laplacian variance; only
@@ -35,6 +36,7 @@ def main() -> None:
     ap.add_argument("--start", type=float, default=0.0)
     ap.add_argument("--end", type=float, default=3.0)
     ap.add_argument("--n", type=int, default=4)
+    ap.add_argument("--times", type=float, nargs="+", help="exact moments in seconds (overrides --start/--end/--n)")
     ap.add_argument("--window", type=int, default=4)
     ap.add_argument("--max-edge", type=int, default=1920)
     a = ap.parse_args()
@@ -45,9 +47,12 @@ def main() -> None:
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     print(f"{a.src}: {total} frames, {fps:.2f} fps, {total / fps:.2f} s")
-    last = min(int(a.end * fps), total - 1)
-    first = min(int(a.start * fps), last)
-    targets = [first + round(i * (last - first) / max(a.n - 1, 1)) for i in range(a.n)] if a.n > 1 else [first]
+    if a.times:
+        targets = [min(round(t * fps), total - 1) for t in a.times]
+    else:
+        last = min(round(a.end * fps), total - 1)
+        first = min(round(a.start * fps), last)
+        targets = [first + round(i * (last - first) / max(a.n - 1, 1)) for i in range(a.n)] if a.n > 1 else [first]
 
     dest = ROOT / a.condition
     dest.mkdir(parents=True, exist_ok=True)
