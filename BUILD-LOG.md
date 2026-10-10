@@ -191,3 +191,12 @@ Workspace `eze-nnanna-chijioke`, workflow `capture-gate-spike`, evening of 8 Oct
 - Checked the leftover strips at full resolution: the remaining screen in 001/002/003 is out-of-focus lines with no readable words (my reading); 011 shows keyboard only. Obstruction count therefore stays 13 (not 9).
 - Agreed plan (user): label ID card about 81 frames (good 19, glare_direct 20 of 35, glare_oblique 12, obstruction 13, partial 5–6, blur 7, lowlight 4); bank card about 34 frames, mostly landscape (good 8, glare 8, obstruction 10 with at least 6 over the text, partial 3, blur 3, lowlight 2) → about 115 own frames, under the 120 ceiling. `glare_direct` picks: 003, 005, 006, 007, 010, 011, 013, 014, 016, 017, 019, 021, 023, 025, 027, 029, 031, 032, 033, 034; exclude 035 and 036 (dark reflections; hard cases).
 - **Still open (user has not answered):** finger-as-obstruction rule; lowlight handling; whether `partial-006` is a full-card frame; Thursday demo-feed orientation.
+
+### Decisions taken by the user, 2026-10-09
+
+1. Finger rule agreed → `DECISIONS.md` D-04.
+2. User chose to **add a `too_dark` reason** (not treat legible dark frames as usable) → D-05, drafted by me from measured evidence; the user has not yet reviewed the wording. Reason codes are now: `glare_over_data_zone`, `incomplete_document`, `obstructed`, `blurred`, `too_dark`, `no_document`. It is a thresholded measurement, not a score, and is within scope before the Monday freeze.
+3. `partial-006` is **not** a full-card frame (not all four corners in view) → stays `partial`.
+4. Demo-feed orientation **undecided** by the user, hence both portrait and landscape in the set.
+- **Whole-frame mean grey, measured:** lowlight 33.3 / 33.7 / 37.2 / 41.7 (001, 003, 002, 004); darkest non-lowlight frames are the dark-carpet glare frames `glare_direct` 027 (78.1), 028 (81.0), 031 (82.5), 030 (88.3), 029 (90.2); good min 127.4. Per condition (min / median / max): blur 145.0 / 157.7 / 165.3; glare_direct 78.1 / 131.0 / 161.6; glare_oblique 109.6 / 129.1 / 134.3; good 127.4 / 143.0 / 169.2; obstruction 109.4 / 139.3 / 153.7; partial 140.2 / 147.6 / 160.7.
+- Consequences noted: (a) a whole-frame brightness threshold would be confused by dark *backgrounds* with a bright card (the carpet frames), so brightness, like blur, belongs on the card region; (b) all four lowlight frames are at one narrow dark level (33–42), so a threshold cannot be tuned from them — a gradient of mildly dim frames is missing; (c) brightness must run before blur in the precedence order.

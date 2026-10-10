@@ -17,3 +17,15 @@
 **Why:** the question a person can act on is "can the data be read", and glare or a thumb elsewhere on the card does not stop that.
 **Rejected:** the whole document as the zone, because glare on the border or a thumb on the photo would fail a good capture; and per-field boxes, because they cost far more labelling and the card layouts differ.
 **Evidence:** MIDV-500's own ground truth separates 11 text fields from the `photo` and `signature` entries; both mock cards have one contiguous text block. Not yet tested: how consistently I label it by hand.
+
+## D-04 · `obstruction` is labelled only where it covers the printed card surface
+**Decision:** a finger or object counts as `obstruction` only if it covers the printed area of the card; fingers behind the card or on the laminate margin are not labelled.
+**Why:** hand-held capture is the normal case, and most real captures have fingers on the card edge, which should not be reported as a defect.
+**Rejected:** labelling any finger contact, because it flags the ordinary way people hold a card and teaches the model that a hand means a problem.
+**Evidence:** the shoot deliberately pairs frames with a thumb over the text and frames with fingers at the edge only (about 6 of each among the 13 obstruction frames, by eye); whether the model separates them is untested.
+
+## D-05 · `too_dark` is its own reason, from a classical brightness check
+**Decision:** a classical brightness measurement on the capture produces a `too_dark` reason, and it is evaluated before the blur check.
+**Why:** darkness lowers the sharpness measure, so without its own reason a dark frame is reported as blurred and the user is told to hold still when the problem is light.
+**Rejected:** treating legible dark frames as usable with no reason, because the sharpness check would still misread them and the user gets no guidance.
+**Evidence:** whole-frame mean grey for the four `lowlight` frames is 33.3–41.7 against 78.1 for the darkest other frame; their whole-frame Laplacian variance (median 46.8) sits below the blur batch (59.8–86.6). Not yet tested: the check on the `data_zone` alone, and any threshold.
