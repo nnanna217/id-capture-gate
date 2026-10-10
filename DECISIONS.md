@@ -19,7 +19,7 @@
 **Evidence:** MIDV-500's own ground truth separates 11 text fields from the `photo` and `signature` entries; on the printed render the text box is 310 × 400 px on the ID card and 872 × 193 px on the bank card (1012 × 638 template), and my first ID zone was 653 px wide, over twice the text, until I measured it.
 
 ## D-04 · `obstruction` is labelled only where it covers the printed card surface
-**Decision:** a finger or object counts as `obstruction` only if it covers the printed area of the card; fingers behind the card or on the laminate margin are not labelled.
+**Decision:** a finger or object counts as `obstruction` only if it covers the printed area of the card, the text block or anywhere else on the printed surface; fingers behind the card or on the laminate margin are not labelled.
 **Why:** hand-held capture is the normal case, and most real captures have fingers on the card edge, which should not be reported as a defect.
 **Rejected:** labelling any finger contact, because it flags the ordinary way people hold a card and teaches the model that a hand means a problem.
 **Evidence:** the shoot deliberately pairs frames with a thumb over the text and frames with fingers at the edge only (about 6 of each among the 13 obstruction frames, by eye); whether the model separates them is untested.
