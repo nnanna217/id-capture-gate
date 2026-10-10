@@ -58,4 +58,4 @@
 **Decision:** the card outline and its text block are computed by matching each frame to the card's known layout; only the two classes that need judgement are drawn by hand.
 **Why:** both mock cards have a fixed, known layout, so these two classes can be located exactly, and labelling time goes where a person is actually needed.
 **Rejected:** SAM 3 for `data_zone`, which annotated none on the trial frames (a text region is not a nameable object), and hand-drawing all four classes on all 131 frames.
-**Evidence:** the template matched 123 of 131 frames, failing only on blurred or very dark ones; I checked overlays on 56 distinct frames (the 30 lowest alignment scores, 24 random others, 4 I doubted) and all were correct bar two slightly rotated outlines; 11 frames still need hand-drawn labels.
+**Evidence:** the template labelled 120 of 131 frames with both polygons, missing only blurred or very dark ones; I checked overlays on 56 distinct frames (the 30 lowest alignment scores, 24 random others, 4 I doubted) and all were correct bar two slightly rotated outlines; 11 frames still need hand-drawn labels.
