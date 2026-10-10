@@ -285,3 +285,10 @@ Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretc
 - User suggested two Roboflow Universe sets. Read both pages in the built-in browser (Universe returns HTTP 403 to the fetch tool); **did not open their images** (avoiding viewing personal ID documents).
 - `test-ckwzi/cccd-7dlm5`: Instance Segmentation, **134 images**, CC BY 4.0, classes `id-card`, `tlu-card`, updated 2 years ago (published Aug 2024), no description. `afc-s-workspace/cv-byofn`: Instance Segmentation, **110 images**, CC BY 4.0, classes `car`, `back`, `addres`, `drive`, `iraq id card`, updated 2 months ago, 4 versions, no description. Neither says whether the documents are specimens or real people's cards; the names point at Vietnamese and Iraqi national IDs.
 - Not used: provenance unverifiable against the no-real-identity-document rule; class mismatch (no `data_zone`/`glare`/`obstruction`) → partial labels would teach the model those classes are absent; small gain (only `document` outlines). `DECISIONS.md` D-08 widened to "no public dataset goes into the Roboflow project".
+
+## 2026-10-10 — Upload verified
+
+- User uploaded the three batches. **Verified through the Roboflow API (script, key from `.env`, key not printed):** project `eze-nnanna-chijioke/capture-gate`, type `instance-segmentation`, **public**, **license CC BY 4.0** (the user kept the default and did not remember it), 131 images, `unannotated` 131, classes `{}`, versions 0.
+- **Per-image split check via the search endpoint: 131 of 131 present; split counts train 92 / valid 26 / test 13; 0 images with a different split from `data/split.csv`; 0 missing; 0 extra.**
+- The project-level `images` and `splits` fields read 0 because uploaded images sit in the annotation queue until annotated and added to the dataset; the Dataset page may show 0 until then.
+- Next: classes (`document`, `data_zone`, `glare`, `obstruction`) and a SAM 3 auto-label trial on 10 frames before labelling everything.
