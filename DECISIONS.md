@@ -16,7 +16,7 @@
 **Decision:** `data_zone` is one rectangle tightly enclosing the printed fields that carry data (names, numbers, dates); it excludes the portrait photo, signature, logos, security patterns and the card edge.
 **Why:** the question a person can act on is "can the data be read", and glare or a thumb elsewhere on the card does not stop that.
 **Rejected:** the whole document as the zone, because glare on the border or a thumb on the photo would fail a good capture; and per-field boxes, because they cost far more labelling and the card layouts differ.
-**Evidence:** MIDV-500's own ground truth separates 11 text fields from the `photo` and `signature` entries; both mock cards have one contiguous text block. Not yet tested: how consistently I label it by hand.
+**Evidence:** MIDV-500's own ground truth separates 11 text fields from the `photo` and `signature` entries; on the printed render the text box is 310 × 400 px on the ID card and 872 × 193 px on the bank card (1012 × 638 template), and my first ID zone was 653 px wide, over twice the text, until I measured it.
 
 ## D-04 · `obstruction` is labelled only where it covers the printed card surface
 **Decision:** a finger or object counts as `obstruction` only if it covers the printed area of the card; fingers behind the card or on the laminate margin are not labelled.
@@ -53,3 +53,9 @@
 **Why:** near-duplicate shots on both sides of a split make the validation score look better than the model is.
 **Rejected:** Roboflow's default random 70/20/10 split, because with this many same-set-up shots it puts copies of one shot in train and validation.
 **Evidence:** nearest-training-frame distance for held-out frames has a median of 0.566 with the group split against 0.292 for random splits (20 seeds); the group split still has leakage through shared backgrounds, which only the MIDV held-out set tests.
+
+## D-10 · `document` and `data_zone` come from the printed template; `glare` and `obstruction` are labelled by hand
+**Decision:** the card outline and its text block are computed by matching each frame to the card's known layout; only the two classes that need judgement are drawn by hand.
+**Why:** both mock cards have a fixed, known layout, so these two classes can be located exactly, and labelling time goes where a person is actually needed.
+**Rejected:** SAM 3 for `data_zone`, which annotated none on the trial frames (a text region is not a nameable object), and hand-drawing all four classes on all 131 frames.
+**Evidence:** the template matched 123 of 131 frames, failing only on blurred or very dark ones; I checked overlays on 56 distinct frames (the 30 lowest alignment scores, 24 random others, 4 I doubted) and all were correct bar two slightly rotated outlines; 11 frames still need hand-drawn labels.
