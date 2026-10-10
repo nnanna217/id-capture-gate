@@ -59,3 +59,9 @@
 **Why:** both mock cards have a fixed, known layout, so these two classes can be located exactly, and labelling time goes where a person is actually needed.
 **Rejected:** SAM 3 for `data_zone`, which annotated none on the trial frames (a text region is not a nameable object), and hand-drawing all four classes on all 131 frames.
 **Evidence:** the template labelled 120 of 131 frames with both polygons, missing only blurred or very dark ones; I checked overlays on 56 distinct frames (the 30 lowest alignment scores, 24 random others, 4 I doubted) and all were correct bar two slightly rotated outlines; 11 frames still need hand-drawn labels.
+
+## D-11 · Augment with rotation, not flips, and no cutout
+**Decision:** train-split augmentation uses 90° rotations, ±15° rotation, mild brightness and blur, and no horizontal or vertical flips, hue or saturation shifts, or cutout.
+**Why:** a handheld card turns however the person holds it and the demo orientation is undecided, while a flip makes mirrored text that never occurs and a cutout paints blocks that look like an obstruction but carry no label.
+**Rejected:** the PPE build's recipe, which left rotation out because its cameras were fixed here that reasoning does not hold, and flips, which were the one thing the recipe did allow.
+**Evidence:** from the template homographies, only 45 of 120 cards are upright (60 sideways, 7 upside down, 8 in between); the staged set is 79 portrait and 52 landscape. Not yet tested: how the platform rotates and crops the glare and obstruction masks.
