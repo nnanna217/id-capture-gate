@@ -371,3 +371,11 @@ Scale factors to 384: x 0.267, y 0.2; to 312: x 0.217, y 0.163 (aspect is stretc
 - **User decisions:** keep the four "CoBSMEs" logo frames in the public project (no crop, no skip); split plan accepted as proposed (valid 12 / test 9). Upload of `upload/new/valid` and `upload/new/test` is the user's next step; after it I verify the project (expected 152 images: train 92, valid 38, test 22), dry-run the template-label import for the 21 (`--labels labels/template-labels-new.json`), and the user labels obstruction on them.
 
 - **Upload of the 21 verified (API):** 152 of 152 images; **train 92, valid 38, test 22**; 0 missing, 0 unexpected, 0 in a different split from `data/split.csv` + `data/split-additions.csv`. Dry run of `import_template_labels.py --labels labels/template-labels-new.json`: image ids read, 21 YOLO polygon files written, nothing sent.
+
+### Dataset verified before v2 (2026-10-10)
+
+- After the user's import (`--all --labels labels/template-labels-new.json`), labelling of the 21 and deletion of the two off-card glare labels, **API check of all 152 images:** train 92 / valid 38 / test 22; `document` 152 and `data_zone` 152 (exactly one each per image); **glare 58, obstruction 46**. Shape types: glare 34 mask + 24 polygon; obstruction 37 mask + 9 polygon; document and data_zone all polygon.
+- **The 21 new frames: 21 of 21 have an obstruction label (21 instances), 0 glare labels.**
+- **By split (instances; images):** train glare 42, obstruction 18 (images 32, 16); **valid glare 11, obstruction 17** (10, 17); **test glare 5, obstruction 11** (5, 11). Obstruction evaluation went from 5 / 2 to 17 / 11 instances. Train glare fell from 44 to 42 (the two off-counter labels removed: `id-glare_direct-006` 2 → 1 glare labels; `-003` now 2). **Train obstruction is still 18.**
+- No glare-condition frame is without a glare label. No *polygon* glare shape lies mostly off the card; mask shapes cannot be checked through the live API, so the definitive off-card test is `check_export.py` on the v2 export.
+- Next: generate v2 with the same settings as v1 (the new-version dialog may not default to them), check the credit estimate first; export v2 and run `check_export.py`; then train once on v2 (Seg Nano, credit cap).
