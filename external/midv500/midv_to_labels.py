@@ -10,7 +10,7 @@ glare / obstruction are NOT in the ground truth and are labelled by hand.
 
 Clutter (CA/CS) goes to `heldout_clutter/` and is never trained on.
 The zip is untrusted third-party data: members are read as bytes and written to paths chosen here.
-Run with `python -I`. Output is gitignored (midv-500/).
+Run with `python -I`. Output is gitignored (local/midv-500/).
 """
 import json
 import zipfile
@@ -20,8 +20,8 @@ import cv2
 import numpy as np
 from shapely.geometry import Polygon, box
 
-ZIP = "midv-500/archives/01_alb_id.zip"
-OUT = Path("midv-500/tiff")
+ZIP = "local/midv-500/archives/01_alb_id.zip"
+OUT = Path("local/midv-500/tiff")
 IDX = [1, 7, 12, 18, 24, 30]
 VIDEOS = ["TA", "TS", "KA", "KS", "HA", "HS", "PA", "PS", "CA", "CS"]
 COND = {"T": "table", "K": "keyboard", "H": "hand", "P": "partial", "C": "clutter"}

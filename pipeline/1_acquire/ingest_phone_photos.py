@@ -5,8 +5,8 @@ usage: python -I pipeline/1_acquire/ingest_phone_photos.py --src ~/Downloads/air
 - reads HEIC/JPG/PNG from --src (originals are copied from, never moved or deleted)
 - applies EXIF orientation, resizes so the long edge is <= --max-edge (default 1920)
 - re-encodes as JPEG, which drops EXIF — including GPS location
-- writes captures/<condition>/<card>-<condition>-NNN.jpg and appends to captures/manifest.csv
-Raw captures stay gitignored (captures/).
+- writes local/captures/<condition>/<card>-<condition>-NNN.jpg and appends to local/captures/manifest.csv
+Raw captures stay gitignored (local/captures/).
 """
 import argparse
 import csv
@@ -19,7 +19,7 @@ import cv2
 
 CONDITIONS = ["good", "glare_direct", "glare_oblique", "obstruction", "partial", "blur", "lowlight"]
 EXTS = {".heic", ".heif", ".jpg", ".jpeg", ".png"}
-ROOT = Path("captures")
+ROOT = Path("local/captures")
 MANIFEST = ROOT / "manifest.csv"
 
 

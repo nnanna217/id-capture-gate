@@ -3,8 +3,8 @@
   data_zone = the template's text-block rectangle (see specimens/generate_mock_cards.py) projected into the frame, clipped
 No hand labelling: the cards have a fixed, known layout. glare / obstruction are NOT derivable and stay manual.
 
-usage: python -I pipeline/2_label/template_labels.py [--list upload/own-set.csv] [--images upload/own] [--out labels/template-labels.json]
-Writes labels/template-labels.json (gitignored) and prints success rate by card and condition.
+usage: python -I pipeline/2_label/template_labels.py [--list local/upload/own-set.csv] [--images local/upload/own] [--out local/labels/template-labels.json]
+Writes local/labels/template-labels.json (gitignored) and prints success rate by card and condition.
 A frame "fails" when too few good matches survive RANSAC; failures are listed, never guessed.
 """
 import argparse
@@ -27,9 +27,9 @@ MAX_EDGE = 1280
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--list', default='upload/own-set.csv')
-    ap.add_argument('--images', default='upload/own')
-    ap.add_argument('--out', default='labels/template-labels.json')
+    ap.add_argument('--list', default='local/upload/own-set.csv')
+    ap.add_argument('--images', default='local/upload/own')
+    ap.add_argument('--out', default='local/labels/template-labels.json')
     args = ap.parse_args()
     sift = cv2.SIFT_create(nfeatures=4000)
     bf = cv2.BFMatcher()
@@ -101,7 +101,7 @@ def main() -> None:
         out[f] = {"width": w0, "height": h0, "card": r["card"], "condition": r["condition"],
                   "inliers": n_in, "ecc": ecc, "H": H_full.tolist(), "objects": objs}
 
-    Path("labels").mkdir(exist_ok=True)
+    Path("local/labels").mkdir(exist_ok=True)
     Path(args.out).write_text(json.dumps(out, indent=1))
     tot_ok = sum(v[0] for v in stats.values())
     print(f"\nmatched {tot_ok} of {len(rows)} frames (min {MIN_INLIERS} inliers)")

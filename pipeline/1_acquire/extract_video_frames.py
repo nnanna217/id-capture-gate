@@ -8,7 +8,7 @@ usage: python -I pipeline/1_acquire/extract_video_frames.py --src ~/Downloads/gl
 - for each, looks +---window frames around it and keeps the sharpest (whole-frame Laplacian variance; only
   used to avoid motion-blurred picks, not as a quality measure)
 - applies the video's rotation (OpenCV does this by default), resizes to --max-edge, re-encodes as JPEG
-  (drops metadata), writes captures/<condition>/<card>-<condition>-NNN.jpg, appends captures/manifest.csv
+  (drops metadata), writes local/captures/<condition>/<card>-<condition>-NNN.jpg, appends local/captures/manifest.csv
   with source=video and the timestamp-in-video in the note of the printed output
 Consecutive video frames are near-duplicates: keep --n small and review what you get.
 """
@@ -20,7 +20,7 @@ from pathlib import Path
 import cv2
 
 CONDITIONS = ["good", "glare_direct", "glare_oblique", "obstruction", "partial", "blur", "lowlight"]
-ROOT = Path("captures")
+ROOT = Path("local/captures")
 MANIFEST = ROOT / "manifest.csv"
 
 

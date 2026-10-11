@@ -1,4 +1,4 @@
-"""Stage the agreed own-frame label set into upload/own/ (copies; gitignored) and write upload/own-set.csv.
+"""Stage the agreed own-frame label set into local/upload/own/ (copies; gitignored) and write local/upload/own-set.csv.
 
 Selection (agreed with the user, 2026-10-09):
   ID card   : all good, glare_oblique, obstruction, partial, blur, lowlight; glare_direct picks below
@@ -14,8 +14,8 @@ BANK_DIRECT = [1, 4, 5, 10, 12, 13, 15]
 BANK_OBLIQUE = [1, 2, 3, 6, 7, 9, 11]
 PICKS = {("id", "glare_direct"): ID_DIRECT, ("bank", "glare_direct"): BANK_DIRECT, ("bank", "glare_oblique"): BANK_OBLIQUE}
 
-rows = list(csv.DictReader(open("captures/manifest.csv")))
-out = Path("upload/own")
+rows = list(csv.DictReader(open("local/captures/manifest.csv")))
+out = Path("local/upload/own")
 if out.exists():
     shutil.rmtree(out)
 out.mkdir(parents=True)
@@ -27,7 +27,7 @@ for r in rows:
         continue
     shutil.copy2(r["file"], out / Path(r["file"]).name)
     chosen.append([Path(r["file"]).name, card, cond, r["width"], r["height"], r["source"]])
-with open("upload/own-set.csv", "w", newline="") as fh:
+with open("local/upload/own-set.csv", "w", newline="") as fh:
     w = csv.writer(fh)
     w.writerow(["file", "card", "condition", "width", "height", "source"])
     w.writerows(chosen)

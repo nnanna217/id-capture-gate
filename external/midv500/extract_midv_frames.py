@@ -2,7 +2,7 @@
 
 6 evenly spaced frames from the middle 80% of each video (avoids the start/end where the document is
 being placed or removed). Clutter (CA/CS) goes to `heldout_clutter/` from the start: it is the
-generalisation check and is never trained on. Output is gitignored (midv-500/).
+generalisation check and is never trained on. Output is gitignored (local/midv-500/).
 Run with `python -I` — the videos are untrusted third-party data.
 """
 import csv
@@ -14,12 +14,12 @@ import cv2
 PER_VIDEO = 6
 CONDITION = {"T": "table", "K": "keyboard", "H": "hand", "P": "partial", "C": "clutter"}
 PHONE = {"A": "phoneA", "S": "phoneS"}
-OUT = "midv-500/frames"
+OUT = "local/midv-500/frames"
 
 
 def main() -> None:
     rows = []
-    for path in sorted(glob.glob("midv-500/videos/*")):
+    for path in sorted(glob.glob("local/midv-500/videos/*")):
         stem = os.path.splitext(os.path.basename(path))[0]  # e.g. TA01
         cond, phone = CONDITION[stem[0]], PHONE[stem[1]]
         split = "heldout_clutter" if cond == "clutter" else cond

@@ -8,7 +8,7 @@ neighbouring frames are similar (HSV colour histogram, Bhattacharyya distance <=
 random search that scores closeness to 70/20/10 per family and penalises any key class (glare, obstruction) or card
 missing from valid or test, and any card/family missing from train.
 
-Writes upload/split.csv and stages upload/train, upload/valid, upload/test (copies; gitignored).
+Writes local/upload/split.csv and stages local/upload/train, local/upload/valid, local/upload/test (copies; gitignored).
 Then reports leakage: nearest-train-frame distance of valid/test frames, group split vs random split.
 """
 import collections
@@ -32,7 +32,7 @@ def num(f):
 
 
 def hist(f):
-    im = cv2.resize(cv2.imread("upload/own/" + f), (160, 213), interpolation=cv2.INTER_AREA)
+    im = cv2.resize(cv2.imread("local/upload/own/" + f), (160, 213), interpolation=cv2.INTER_AREA)
     h = cv2.calcHist([cv2.cvtColor(im, cv2.COLOR_BGR2HSV)], [0, 1, 2], None, [8, 4, 4], [0, 180, 0, 256, 0, 256])
     return cv2.normalize(h, h).flatten()
 
@@ -42,7 +42,7 @@ def dist(a, b):
 
 
 def main() -> None:
-    rows = list(csv.DictReader(open("upload/own-set.csv")))
+    rows = list(csv.DictReader(open("local/upload/own-set.csv")))
     H = {r["file"]: hist(r["file"]) for r in rows}
     by = collections.defaultdict(list)
     for r in rows:
@@ -114,14 +114,14 @@ def main() -> None:
         for f in g[3]:
             out[assign[id(g)]].append((f, g))
     for s in RATIO:
-        d = Path("upload") / s
+        d = Path("local/upload") / s
         if d.exists():
             shutil.rmtree(d)
         d.mkdir(parents=True)
         for f, _ in out[s]:
-            shutil.copy2("upload/own/" + f, d / f)
+            shutil.copy2("local/upload/own/" + f, d / f)
     gid = {id(g): i for i, g in enumerate(groups)}
-    with open("upload/split.csv", "w", newline="") as fh:
+    with open("local/upload/split.csv", "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["file", "card", "condition", "family", "group", "split"])
         for s in RATIO:

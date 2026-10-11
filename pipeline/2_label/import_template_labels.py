@@ -4,9 +4,9 @@ Format: Darknet/YOLO text with polygon rows (`class x1 y1 x2 y2 ...`, normalised
 POST /dataset/{project}/annotate/{image_id}. WHETHER THIS FORMAT IMPORTS AS POLYGONS IN AN INSTANCE SEGMENTATION PROJECT IS
 NOT DOCUMENTED, so this script has three modes and the default writes nothing:
 
-  python -I pipeline/2_label/import_template_labels.py                      dry run: reads image ids (read-only), writes labels/yolo/*.txt, shows a sample
+  python -I pipeline/2_label/import_template_labels.py                      dry run: reads image ids (read-only), writes local/labels/yolo/*.txt, shows a sample
   python -I pipeline/2_label/import_template_labels.py --only FILE.jpg      WRITES one image's annotation
-  python -I pipeline/2_label/import_template_labels.py --all                WRITES every frame in labels/template-labels.json
+  python -I pipeline/2_label/import_template_labels.py --all                WRITES every frame in local/labels/template-labels.json
 
 A 409 means the image already has an annotation; it is reported and skipped, never overwritten.
 The API key is read from .env and never printed.
@@ -68,13 +68,13 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only")
     ap.add_argument("--all", action="store_true")
-    ap.add_argument("--labels", default="labels/template-labels.json")
+    ap.add_argument("--labels", default="local/labels/template-labels.json")
     a = ap.parse_args()
     if not KEY:
         sys.exit("ROBOFLOW_API_KEY missing in .env")
     labels = json.load(open(a.labels))
     ids = image_ids()
-    out = Path("labels/yolo")
+    out = Path("local/labels/yolo")
     out.mkdir(parents=True, exist_ok=True)
     files = [a.only] if a.only else sorted(k for k, v in labels.items() if v["objects"])  # skip frames with no polygons
     missing = [f for f in files if f not in ids or f not in labels]
@@ -82,7 +82,7 @@ def main() -> None:
         sys.exit(f"not found on the platform or in the label file: {missing[:5]}")
     for f in files:
         (out / (Path(f).stem + ".txt")).write_text(yolo_poly(labels[f]))
-    print(f"read {len(ids)} image ids; wrote {len(files)} YOLO polygon files to labels/yolo/")
+    print(f"read {len(ids)} image ids; wrote {len(files)} YOLO polygon files to local/labels/yolo/")
     sample = files[0]
     print(f"\nsample ({sample}, id {ids[sample]}):\n{(out / (Path(sample).stem + '.txt')).read_text()[:400]}")
     if not (a.only or a.all):

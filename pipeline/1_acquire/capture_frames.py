@@ -1,7 +1,7 @@
 """Shoot the primary dataset. Keys 1-7 pick the condition, SPACE saves, Q quits.
 
-Frames go to captures/<condition>/ (gitignored: raw frames are shot at home and unredacted)
-and every save is appended to captures/manifest.csv with the condition and actual resolution,
+Frames go to local/captures/<condition>/ (gitignored: raw frames are shot at home and unredacted)
+and every save is appended to local/captures/manifest.csv with the condition and actual resolution,
 so nothing about a frame has to be remembered later.
 """
 import csv
@@ -19,7 +19,7 @@ CONDITIONS = {
     "6": ("blur", 10),
     "7": ("lowlight", 8),
 }
-ROOT = Path("captures")
+ROOT = Path("local/captures")
 MANIFEST = ROOT / "manifest.csv"
 
 

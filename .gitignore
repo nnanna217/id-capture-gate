@@ -12,28 +12,25 @@ __pycache__/
 # personal method notes: kept locally, not evidence of anything graded
 prompts.md
 
-# third-party datasets: large, separately licensed, reproducible from source
+# EVERYTHING that must never leave this machine lives under local/:
+# raw captures (shot at home, unredacted), staged uploads, labels, Roboflow exports, the MIDV dataset
+# (CC BY-SA 2.5), and the originals kept before privacy crops. One rule to audit.
+local/
+
+# belt and braces: if an old command or habit recreates one of these at the repo root, it is still ignored
+captures/
+upload/
+labels/
+exports/
 midv-500/
 midv-2020/
+private-backup/
 data/raw/
-
-# raw captures and video: shot at home, unredacted, and large
-captures/
 my-images/
+
+# raw video and anything large, anywhere
 *.mp4
 *.mov
 
 # commit redacted stills for the deck only, and keep them small
 # screenshots/ stays tracked — check each one is redacted before adding
-
-# originals kept before privacy crops: never committed
-private-backup/
-
-# files staged for upload to Roboflow: copies of raw captures, never committed
-upload/
-
-# derived labels reference raw frames by name only but are regenerated; keep out of git
-labels/
-
-# dataset exports downloaded from Roboflow: images of the raw frames, never committed
-exports/

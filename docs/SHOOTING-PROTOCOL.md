@@ -1,6 +1,6 @@
 # Shooting protocol — mock specimen cards
 
-Target: **112 frames**, split evenly across the two printed mock cards (`id` and `bank`). Specimen cards only: no real document, no other card, and no mail or personal items in the background. Keep your face out of frame. Raw photos stay out of git (`captures/` is ignored).
+Target: **112 frames**, split evenly across the two printed mock cards (`id` and `bank`). Specimen cards only: no real document, no other card, and no mail or personal items in the background. Keep your face out of frame. Raw photos stay out of git (`local/captures/` is ignored).
 
 ## Per card
 
