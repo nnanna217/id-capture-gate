@@ -71,3 +71,9 @@
 **Why:** both minority classes learned on the first run, and Nano is the smallest and fastest size, which is the point of the on-device argument.
 **Rejected:** starting at Seg Small (384 × 384), because nothing in the per-class numbers asks for a larger model and it measured about 80 ms against about 56 ms on the pretrained checkpoints.
 **Evidence:** validation AP50 glare 0.904 (11 instances), obstruction 0.837 (17); test glare 1.000 (5), obstruction 0.965 (11); the run cost 0.34 credits and took 10 min 33 s. Seg Small was not trained, so the comparison is on latency only.
+
+## D-13 · One instruction at a time: dark, no card, cut off, covered, glare, blur
+**Decision:** every reason that fires is kept in the reason list, but the single guidance string follows this order: `too_dark`, `no_document`, `incomplete_document`, `obstructed`, `glare_over_data_zone`, `blurred`.
+**Why:** each check only means something once the ones above it hold (no light means no reliable detection, no card in frame means no text zone, a covered or glared zone cannot be judged for sharpness), and a person can act on one instruction at a time.
+**Rejected:** reading every reason out at once, a severity-weighted ranking (a score by another name), and blur first because it is the cheapest fix, since blur misfires on dark, covered and glared frames.
+**Evidence:** inside the rectified text zone, dark frames (ID 36–116, bank 26–42), bank frames with an obstruction (down to 30.6) or glare (down to 55.8) fall in the range of the heavily blurred ID frames (46–65), against sharp frames at 501 and above (ID) and 167 and above (bank); 0 of 152 frames carry both glare and obstruction, so the order of those two, and of the top three, rests on dependency and not on data.
