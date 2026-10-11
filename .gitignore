@@ -34,3 +34,6 @@ upload/
 
 # derived labels reference raw frames by name only but are regenerated; keep out of git
 labels/
+
+# dataset exports downloaded from Roboflow: images of the raw frames, never committed
+exports/
