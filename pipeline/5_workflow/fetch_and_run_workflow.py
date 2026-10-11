@@ -3,7 +3,7 @@
 Checks the Save-vs-Publish trap: the published `config` must have steps; the draft lives in
 `lastVersionConfig`. Never prints the API key or any URL containing it.
 
-usage: python fetch_and_run_workflow.py <workflow-url-slug> <image> [<image> ...]
+usage: python -I pipeline/5_workflow/fetch_and_run_workflow.py <workflow-url-slug> <image> [<image> ...]
 """
 import json
 import os

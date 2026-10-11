@@ -69,7 +69,7 @@ def bank_card():
 
 
 def main():
-    out = Path("cards")
+    out = Path("specimens/cards")
     out.mkdir(exist_ok=True)
     page = Image.new("RGB", (PAGE_W, PAGE_H), "white")
     d = ImageDraw.Draw(page)

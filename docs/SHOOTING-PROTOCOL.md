@@ -45,7 +45,7 @@ About 6 frames with two problems at once (for example glare plus a corner cut of
 One batch per condition and card, in its own folder, then ingest. Example:
 
 ```bash
-cd /Users/nnannaeze/Personal/capture-gate && ./.venv/bin/python ingest_phone_photos.py --src ~/Downloads/glare-direct-id --condition glare_direct --card id
+cd /Users/nnannaeze/Personal/capture-gate && ./.venv/bin/python -I pipeline/1_acquire/ingest_phone_photos.py --src ~/Downloads/glare-direct-id --condition glare_direct --card id
 ```
 
 Conditions: `good`, `glare_direct`, `glare_oblique`, `obstruction`, `partial`, `blur`, `lowlight`. Cards: `id`, `bank`.

@@ -1,6 +1,6 @@
 """Take frames from a phone video into the dataset (same naming/manifest as ingest_phone_photos.py).
 
-usage: python extract_video_frames.py --src ~/Downloads/glare-video.MOV --condition glare_direct --card bank \
+usage: python -I pipeline/1_acquire/extract_video_frames.py --src ~/Downloads/glare-video.MOV --condition glare_direct --card bank \
            [--times 0.02 0.3 | --start 0 --end 3 --n 4] [--window 4] [--max-edge 1920]
   for a specific moment (e.g. the glare peak) use --times T --window 0: no drift to a 'sharper' frame
 

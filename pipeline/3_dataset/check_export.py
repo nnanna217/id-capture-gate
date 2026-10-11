@@ -1,6 +1,6 @@
 """Sanity-check a downloaded Roboflow COCO-segmentation export (exports/<v>/x/{train,valid,test}).
 
-usage: python check_export.py exports/v1/x
+usage: python -I pipeline/3_dataset/check_export.py exports/v1/x
 Reports, per split: glare / obstruction instance counts, the share of each shape lying on the document, and (glare) the
 share of shapes brighter than their surround; for train, how stable the on-card share is across the 3 augmented copies of a
 source image; and any glare shape lying mostly off the card. Run with `python -I` (the export is downloaded data).

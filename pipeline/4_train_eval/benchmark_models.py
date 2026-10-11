@@ -1,7 +1,7 @@
 """Latency of COCO-pretrained RF-DETR checkpoints on this machine (speed only; the weights are irrelevant to timing).
 
 Same architecture and input size as the models that would be trained, so this is a fair preview of the demo's frame rate
-for detection vs segmentation. usage: python benchmark_models.py <image> [alias ...]
+for detection vs segmentation. usage: python -I pipeline/4_train_eval/benchmark_models.py <image> [alias ...]
 Times include Inference's pre/post-processing (model.infer), not camera or drawing. One image, repeated.
 """
 import statistics as st

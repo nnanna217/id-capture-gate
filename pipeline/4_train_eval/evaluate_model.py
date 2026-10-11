@@ -4,10 +4,10 @@ The platform's results card shows only a headline mAP; this reports AP per class
 beside it, because with few instances a per-class AP is anecdotal.
 
 usage:
-  python evaluate_model.py --model capture-gate/2 --coco exports/v2/x/valid           # valid split of the v2 export
-  python evaluate_model.py --model capture-gate/2 --coco exports/v2/x/test
-  python evaluate_model.py --model capture-gate/2 --midv                               # held-out MIDV Clutter (document, data_zone only)
-  python evaluate_model.py --selftest --coco exports/v2/x/valid                        # ground truth as predictions: every AP must be 1.0
+  python -I pipeline/4_train_eval/evaluate_model.py --model capture-gate/2 --coco exports/v2/x/valid           # valid split of the v2 export
+  python -I pipeline/4_train_eval/evaluate_model.py --model capture-gate/2 --coco exports/v2/x/test
+  python -I pipeline/4_train_eval/evaluate_model.py --model capture-gate/2 --midv                               # held-out MIDV Clutter (document, data_zone only)
+  python -I pipeline/4_train_eval/evaluate_model.py --selftest --coco exports/v2/x/valid                        # ground truth as predictions: every AP must be 1.0
 
 Metric: COCO mask AP (pycocotools), AP = mean over IoU 0.50:0.95 and 101 recall points, AP50 = IoU 0.50. The model is run at
 confidence 0.01 so the precision-recall curve is complete. Run with `python -I`; the key is read from .env, never printed.

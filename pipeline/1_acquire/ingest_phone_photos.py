@@ -1,6 +1,6 @@
 """Bring phone photos into the dataset: convert, normalise, strip metadata, record condition and card.
 
-usage: python ingest_phone_photos.py --src ~/Downloads/airdrop-batch --condition glare_direct --card id
+usage: python -I pipeline/1_acquire/ingest_phone_photos.py --src ~/Downloads/airdrop-batch --condition glare_direct --card id
 
 - reads HEIC/JPG/PNG from --src (originals are copied from, never moved or deleted)
 - applies EXIF orientation, resizes so the long edge is <= --max-edge (default 1920)

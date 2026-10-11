@@ -4,9 +4,9 @@ Format: Darknet/YOLO text with polygon rows (`class x1 y1 x2 y2 ...`, normalised
 POST /dataset/{project}/annotate/{image_id}. WHETHER THIS FORMAT IMPORTS AS POLYGONS IN AN INSTANCE SEGMENTATION PROJECT IS
 NOT DOCUMENTED, so this script has three modes and the default writes nothing:
 
-  python import_template_labels.py                      dry run: reads image ids (read-only), writes labels/yolo/*.txt, shows a sample
-  python import_template_labels.py --only FILE.jpg      WRITES one image's annotation
-  python import_template_labels.py --all                WRITES every frame in labels/template-labels.json
+  python -I pipeline/2_label/import_template_labels.py                      dry run: reads image ids (read-only), writes labels/yolo/*.txt, shows a sample
+  python -I pipeline/2_label/import_template_labels.py --only FILE.jpg      WRITES one image's annotation
+  python -I pipeline/2_label/import_template_labels.py --all                WRITES every frame in labels/template-labels.json
 
 A 409 means the image already has an annotation; it is reported and skipped, never overwritten.
 The API key is read from .env and never printed.

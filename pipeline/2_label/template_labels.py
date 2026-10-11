@@ -1,9 +1,9 @@
 """Locate each mock card in each frame by matching its printed design (SIFT + RANSAC homography), then derive:
   document  = the template card rectangle projected into the frame, clipped to the image
-  data_zone = the template's text-block rectangle (see generate_mock_cards.py) projected into the frame, clipped
+  data_zone = the template's text-block rectangle (see specimens/generate_mock_cards.py) projected into the frame, clipped
 No hand labelling: the cards have a fixed, known layout. glare / obstruction are NOT derivable and stay manual.
 
-usage: python template_labels.py [--list upload/own-set.csv] [--images upload/own] [--out labels/template-labels.json]
+usage: python -I pipeline/2_label/template_labels.py [--list upload/own-set.csv] [--images upload/own] [--out labels/template-labels.json]
 Writes labels/template-labels.json (gitignored) and prints success rate by card and condition.
 A frame "fails" when too few good matches survive RANSAC; failures are listed, never guessed.
 """
@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 from shapely.geometry import Polygon, box
 
-TEMPLATES = {"id": "cards/print-id.png", "bank": "cards/print-bank.png"}  # the PDF as printed, rendered at 300 dpi
+TEMPLATES = {"id": "specimens/cards/print-id.png", "bank": "specimens/cards/print-bank.png"}  # the PDF as printed, rendered at 300 dpi
 # tight text-block rectangles in template pixels: measured text bbox of the printed render + 10 px margin
 # (ID text bbox 329,102-639,502; bank 36,246-908,439). The first version used the whole right panel and was ~2x too wide.
 ZONES = {"id": (319, 92, 649, 512), "bank": (26, 236, 918, 449)}

@@ -76,7 +76,7 @@ def bank_card(c, x, y):
 
 
 def main():
-    out = Path("cards"); out.mkdir(exist_ok=True)
+    out = Path("specimens/cards"); out.mkdir(exist_ok=True)
     c = canvas.Canvas(str(out / "mock-cards-letter.pdf"), pagesize=letter)
     c.setTitle("Mock specimen cards - print at 100%")
     pw, ph = letter
