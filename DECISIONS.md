@@ -28,7 +28,7 @@
 **Decision:** a classical brightness measurement on the capture produces a `too_dark` reason, and it is evaluated before the blur check.
 **Why:** darkness lowers the sharpness measure, so without its own reason a dark frame is reported as blurred and the user is told to hold still when the problem is light.
 **Rejected:** treating legible dark frames as usable with no reason, because the sharpness check would still misread them and the user gets no guidance.
-**Evidence:** whole-frame mean grey for the four `lowlight` frames is 33.3–41.7 against 78.1 for the darkest other frame; their whole-frame Laplacian variance (median 46.8) sits below the blur batch (59.8–86.6). Not yet tested: the check on the `data_zone` alone, and any threshold.
+**Evidence:** whole-frame mean grey for the four `lowlight` frames is 33.3–41.7 against 78.1 for the darkest other frame; their whole-frame Laplacian variance (median 46.8) sits below the blur batch (59.8–86.6). Measured on the card, the 95th-percentile grey of the 11 lowlight frames is 103 or less and of the other 141 frames 116 or more, so the cut-off is 110, with a margin of only 13 on the dark-blue bank card; in the workflow all 11 lowlight frames return `too_dark`.
 
 ## D-06 · Instance segmentation with polygon labels, not box detection
 **Decision:** an Instance Segmentation project, polygon labels for all four classes, RF-DETR Seg Nano as the first model.
@@ -73,7 +73,13 @@
 **Evidence:** validation AP50 glare 0.904 (11 instances), obstruction 0.837 (17); test glare 1.000 (5), obstruction 0.965 (11); the run cost 0.34 credits and took 10 min 33 s. Seg Small was not trained, so the comparison is on latency only.
 
 ## D-13 · One instruction at a time: dark, no card, cut off, covered, glare, blur
-**Decision:** every reason that fires is kept in the reason list, but the single guidance string follows this order: `too_dark`, `no_document`, `incomplete_document`, `obstructed`, `glare_over_data_zone`, `blurred`.
+**Decision:** every reason that fires is kept in the reason list, but the single guidance string follows this order: `too_dark`, `no_document`, `incomplete_document`, `obstructed`, `glare_over_data_zone`, `blurred`; blur is only judged when nothing above it applies.
 **Why:** each check only means something once the ones above it hold (no light means no reliable detection, no card in frame means no text zone, a covered or glared zone cannot be judged for sharpness), and a person can act on one instruction at a time.
 **Rejected:** reading every reason out at once, a severity-weighted ranking (a score by another name), and blur first because it is the cheapest fix, since blur misfires on dark, covered and glared frames.
 **Evidence:** inside the rectified text zone, dark frames (ID 36–116, bank 26–42), bank frames with an obstruction (down to 30.6) or glare (down to 55.8) fall in the range of the heavily blurred ID frames (46–65), against sharp frames at 501 and above (ID) and 167 and above (bank); 0 of 152 frames carry both glare and obstruction, so the order of those two, and of the top three, rests on dependency and not on data.
+
+## D-14 · Blur is a short classical measurement on the text zone, not a model and not the whole frame
+**Decision:** sharpness is the Laplacian variance divided by the pixel variance of the text zone, warped to a fixed size, with one cut-off per zone layout (0.35 for the block-shaped ID zone, 0.70 for the wide bank strip).
+**Why:** a classical measure is cheap and explainable inside the block, and the whole frame mostly measures the scene, not the text.
+**Rejected:** a blur class or model, because there are no labelled blur frames to train it on, and a whole-frame Laplacian, which varied about 8.5 times across sharp frames (189.5 to 1,602.4) from scene texture alone.
+**Evidence:** on the warped zone, heavily blurred ID frames score 0.083 to 0.093 against sharp ones from 0.526, and bank blur tops out at 0.505 against sharp from 0.959; the cut-offs are provisional because no mildly blurred frame exists, and a zone under 320 px is upsampled and reads softer than it is.
