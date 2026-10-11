@@ -3,10 +3,11 @@
   data_zone = the template's text-block rectangle (see generate_mock_cards.py) projected into the frame, clipped
 No hand labelling: the cards have a fixed, known layout. glare / obstruction are NOT derivable and stay manual.
 
-usage: python template_labels.py            (all frames in upload/own)
+usage: python template_labels.py [--list upload/own-set.csv] [--images upload/own] [--out labels/template-labels.json]
 Writes labels/template-labels.json (gitignored) and prints success rate by card and condition.
 A frame "fails" when too few good matches survive RANSAC; failures are listed, never guessed.
 """
+import argparse
 import collections
 import csv
 import json
@@ -25,6 +26,11 @@ MAX_EDGE = 1280
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--list', default='upload/own-set.csv')
+    ap.add_argument('--images', default='upload/own')
+    ap.add_argument('--out', default='labels/template-labels.json')
+    args = ap.parse_args()
     sift = cv2.SIFT_create(nfeatures=4000)
     bf = cv2.BFMatcher()
     tmpl, tmpl_gray = {}, {}
@@ -36,12 +42,12 @@ def main() -> None:
         tmpl_gray[card] = g
         print(f"template {card}: {im.shape[1]}x{im.shape[0]}, {len(kp)} keypoints")
 
-    rows = list(csv.DictReader(open("upload/own-set.csv")))
+    rows = list(csv.DictReader(open(args.list)))
     out, stats, fails = {}, collections.defaultdict(lambda: [0, 0]), []
     for r in rows:
         f = r["file"]
         w_t, h_t, kp_t, ds_t = tmpl[r["card"]]
-        im = cv2.imread("upload/own/" + f)
+        im = cv2.imread(args.images + "/" + f)
         h0, w0 = im.shape[:2]
         s = min(1.0, MAX_EDGE / max(h0, w0))
         small = cv2.resize(im, None, fx=s, fy=s) if s < 1 else im
@@ -96,7 +102,7 @@ def main() -> None:
                   "inliers": n_in, "ecc": ecc, "H": H_full.tolist(), "objects": objs}
 
     Path("labels").mkdir(exist_ok=True)
-    Path("labels/template-labels.json").write_text(json.dumps(out, indent=1))
+    Path(args.out).write_text(json.dumps(out, indent=1))
     tot_ok = sum(v[0] for v in stats.values())
     print(f"\nmatched {tot_ok} of {len(rows)} frames (min {MIN_INLIERS} inliers)")
     for k in sorted(stats):

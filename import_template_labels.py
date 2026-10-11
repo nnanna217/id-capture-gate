@@ -68,10 +68,11 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--only")
     ap.add_argument("--all", action="store_true")
+    ap.add_argument("--labels", default="labels/template-labels.json")
     a = ap.parse_args()
     if not KEY:
         sys.exit("ROBOFLOW_API_KEY missing in .env")
-    labels = json.load(open("labels/template-labels.json"))
+    labels = json.load(open(a.labels))
     ids = image_ids()
     out = Path("labels/yolo")
     out.mkdir(parents=True, exist_ok=True)
