@@ -65,3 +65,9 @@
 **Why:** a handheld card turns however the person holds it and the demo orientation is undecided, while a flip makes mirrored text that never occurs and a cutout paints blocks that look like an obstruction but carry no label.
 **Rejected:** the PPE build's recipe, which left rotation out because its cameras were fixed here that reasoning does not hold, and flips, which were the one thing the recipe did allow.
 **Evidence:** from the template homographies, only 45 of 120 cards are upright (60 sideways, 7 upside down, 8 in between); the staged set is 79 portrait and 52 landscape. On the exported version, 90% of augmented glare shapes (n = 126) are brighter than the card around them against 91% of untouched validation shapes (n = 11), and a source image's on-card share moves by at most 0.07 across its three copies.
+
+## D-12 · Stay with Seg Nano after the first run
+**Decision:** the model for the demo is RF-DETR Seg Nano at 312 × 312, from one training run on v2, with no move up a size.
+**Why:** both minority classes learned on the first run, and Nano is the smallest and fastest size, which is the point of the on-device argument.
+**Rejected:** starting at Seg Small (384 × 384), because nothing in the per-class numbers asks for a larger model and it measured about 80 ms against about 56 ms on the pretrained checkpoints.
+**Evidence:** validation AP50 glare 0.904 (11 instances), obstruction 0.837 (17); test glare 1.000 (5), obstruction 0.965 (11); the run cost 0.34 credits and took 10 min 33 s. Seg Small was not trained, so the comparison is on latency only.
