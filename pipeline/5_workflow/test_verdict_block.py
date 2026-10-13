@@ -160,17 +160,17 @@ if HAVE_INTERNALS:   # needs to replace the block's sharpness helper, which is n
             return call(scene(), items)
         finally:
             NS["_zone_sharpness"] = real
-    rb = with_stub(0.50, 1.3, card)      # block-shaped zone (ID-like): 0.50 is above its 0.35 cut-off
+    rb = with_stub(0.50, 1.3, card)      # block-shaped zone (ID-like): 0.50 is above its 0.43 cut-off
     rw = with_stub(0.50, 4.2, card)      # wide strip (bank-like): 0.50 is below its 0.70 cut-off
-    check("sharpness 0.50: usable in a block-shaped zone (cut-off 0.35), blurred in a wide strip (cut-off 0.70)",
-          rb["verdict"] == "usable" and rb["details"]["blur_threshold_used"] == 0.35
+    check("sharpness 0.50: usable in a block-shaped zone (cut-off 0.43), blurred in a wide strip (cut-off 0.70)",
+          rb["verdict"] == "usable" and rb["details"]["blur_threshold_used"] == 0.43
           and rw["reasons"] == ["blurred"] and rw["details"]["blur_threshold_used"] == 0.70, (rb["details"], rw["details"]))
     check("a very soft block-shaped zone is still blurred", with_stub(0.08, 1.3, card)["reasons"] == ["blurred"], None)
     check("a sharp wide strip is usable", with_stub(1.2, 4.2, card)["verdict"] == "usable", None)
 
 # --- the default thresholds are decisions with evidence behind them (BUILD-LOG 2026-10-11): pin them
 th = call(scene(), card)["details"]["thresholds"]
-check("default thresholds are pinned", th == {"min_confidence": 0.4, "dark_p95": 110.0, "blur_min_block": 0.35, "blur_min_wide": 0.70,
+check("default thresholds are pinned", th == {"min_confidence": 0.4, "dark_p95": 110.0, "blur_min_block": 0.43, "blur_min_wide": 0.70,
       "wide_aspect": 2.5, "overlap_min": 0.02, "edge_margin_px": 2, "covered_card": 0.9}, th)
 
 print(f"\n{sum(results)} of {len(results)} passed" + ("" if HAVE_INTERNALS else "  (3 tests that need the block's internals were skipped for this variant)"))

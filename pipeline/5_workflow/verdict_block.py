@@ -14,10 +14,10 @@ Precedence (D-13): too_dark, no_document, incomplete_document, obstructed, glare
 
 Defaults come from measurements on this project's 152 frames and are provisional where noted (BUILD-LOG.md, 2026-10-11):
   dark_p95      110   95th-percentile grey over the card; 11 lowlight frames <= 103, 141 others >= 116 (margin 13 on the bank card)
-  blur_min_*    0.35 / 0.70  zone sharpness (Laplacian variance / pixel variance, zone warped to 320 px), one cut-off per text-zone
-                      layout because the scales differ: block-shaped zone (aspect < 2.5, the ID card) 0.35: blur <= 0.093, sharp >= 0.526;
+  blur_min_*    0.43 / 0.70  zone sharpness (Laplacian variance / pixel variance, zone warped to 320 px), one cut-off per text-zone
+                      layout because the scales differ: block-shaped zone (aspect < 2.5, the ID card) 0.43: blur <= 0.093 plus id-glare_direct-011 at 0.406 (judged blurred by a person), sharp >= 0.462 (id-glare_direct-013, judged sharp);
                       wide strip (aspect >= 2.5, the bank card) 0.70: blur <= 0.505, sharp >= 0.959. PROVISIONAL: no mildly blurred
-                      frames exist, and two ID frames at 0.406 / 0.462 are undecided (to be judged by a person)
+                      frames exist, and 0.43 was placed between those two person-judged frames, so it rests on ONE blurred frame near the line
   overlap_min   0.02  share of the text zone covered; slivers under 2% are not counted
   min_confidence 0.4  the model's score cut-off (provisional: not yet tuned on held-out frames)
   edge_margin_px 2    the card mask touching the frame edge within this many pixels means a corner is out of frame
@@ -77,7 +77,7 @@ def _zone_sharpness(gray, zone, long_side=320):
     return float(cv2.Laplacian(patch, cv2.CV_64F).var()) / var, aspect
 
 
-def run(self, image, predictions, min_confidence=0.4, dark_p95=110.0, blur_min_block=0.35, blur_min_wide=0.70, wide_aspect=2.5,
+def run(self, image, predictions, min_confidence=0.4, dark_p95=110.0, blur_min_block=0.43, blur_min_wide=0.70, wide_aspect=2.5,
         overlap_min=0.02, edge_margin_px=2, covered_card=0.9):
     img = image.numpy_image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if img.ndim == 3 else img

@@ -1,4 +1,4 @@
-def run(self, image, predictions, min_confidence=0.4, dark_p95=110.0, blur_min_block=0.35, blur_min_wide=0.7, wide_aspect=2.5, overlap_min=0.02, edge_margin_px=2, covered_card=0.9):
+def run(self, image, predictions, min_confidence=0.4, dark_p95=110.0, blur_min_block=0.43, blur_min_wide=0.7, wide_aspect=2.5, overlap_min=0.02, edge_margin_px=2, covered_card=0.9):
     """Capture-quality verdict. Generated from verdict_block.py by make_editor_block.py: do not edit by hand."""
     import cv2
     import numpy as np

@@ -32,7 +32,7 @@ SPEC = {
                                 "selector_data_kind": {"step_output": ["instance_segmentation_prediction"]}},
                 "min_confidence": num_input(0.4),
                 "dark_p95": num_input(110.0),
-                "blur_min_block": num_input(0.35),
+                "blur_min_block": num_input(0.43),
                 "blur_min_wide": num_input(0.70),
                 "wide_aspect": num_input(2.5),
                 "overlap_min": num_input(0.02),

@@ -67,7 +67,7 @@ META = [
  ("Medium-soft text in two layouts", "usable on the ID-shaped zone, blurred on the wide strip", {"wide": 1, "blur": 1}),
  ("Very soft text, ID-shaped zone", "blurred", {"blur": 1}),
  ("Sharp text, wide strip", "usable", {"wide": 1}),
- ("The default cut-offs are fixed", "pinned: dark 110, blur 0.35 / 0.70, overlap 2%, and so on", {"text": 1}),
+ ("The default cut-offs are fixed", "pinned: dark 110, blur 0.43 / 0.70, overlap 2%, and so on", {"text": 1}),
 ]
 for t, m in zip(tests, META):
     t["plain"], t["expect"], t["scene"] = m
