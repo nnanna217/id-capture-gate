@@ -1,14 +1,17 @@
 """Build the capture-gate verdict Workflow spec: trained segmentation model -> custom verdict block.
 
-The custom block's code is the unchanged text of verdict_block.py (single source of truth; the unit tests run the same text).
+The custom block's code is the text published on the platform (workflows/verdict_block_editor.py, generated from verdict_block.py).
 Writes workflows/capture-gate-verdict.json. Run from the repo root:
     python -I pipeline/5_workflow/build_workflow.py
 """
 import json
 from pathlib import Path
 
-MODEL_ID = "capture-gate/2"          # library form {project}/{version}; the platform id is ...capture-gate-2-rfdetr-seg-nano-t1
-CODE = Path("pipeline/5_workflow/verdict_block.py").read_text()
+MODEL_ID = "eze-nnanna-chijioke/capture-gate-2-rfdetr-seg-nano-t1"   # the trained model, as the platform names it
+SRC, EDITOR = Path("pipeline/5_workflow/verdict_block.py"), Path("workflows/verdict_block_editor.py")
+if not EDITOR.exists() or EDITOR.stat().st_mtime < SRC.stat().st_mtime:
+    raise SystemExit("workflows/verdict_block_editor.py is missing or older than verdict_block.py: run make_editor_block.py first")
+CODE = EDITOR.read_text()   # the exact text published on the platform (single-function form), not the module-level source
 
 
 def num_input(default):
@@ -46,17 +49,16 @@ SPEC = {
         "code": {"type": "PythonCode", "run_function_code": CODE, "run_function_name": "run"},
     }],
     "steps": [
-        {"type": "roboflow_core/roboflow_instance_segmentation_model@v2", "name": "segmenter",
-         "images": "$inputs.image", "model_id": MODEL_ID, "confidence": 0.25},
-        {"type": "CaptureVerdict", "name": "capture_verdict", "image": "$inputs.image",
-         "predictions": "$steps.segmenter.predictions"},
+        {"type": "roboflow_core/roboflow_instance_segmentation_model@v4", "name": "model", "model_id": MODEL_ID,
+         "confidence_mode": "custom", "custom_confidence": 0.25, "images": "$inputs.image"},
+        {"type": "CaptureVerdict", "name": "capture_verdict", "image": "$inputs.image", "predictions": "$steps.model.predictions"},
     ],
     "outputs": [
         {"type": "JsonField", "name": "verdict", "selector": "$steps.capture_verdict.verdict"},
         {"type": "JsonField", "name": "reasons", "selector": "$steps.capture_verdict.reasons"},
         {"type": "JsonField", "name": "guidance", "selector": "$steps.capture_verdict.guidance"},
         {"type": "JsonField", "name": "details", "selector": "$steps.capture_verdict.details"},
-        {"type": "JsonField", "name": "predictions", "selector": "$steps.segmenter.predictions"},
+        {"type": "JsonField", "name": "predictions", "selector": "$steps.model.predictions"},
     ],
 }
 

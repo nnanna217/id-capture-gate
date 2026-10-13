@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capture gate: what was tested</title>
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#1d2330;--mute:#5b6577;--line:#dcd8cf;--accent:#2f5bd6;--ok:#1f8a4c;--bad:#c0392b;--warn:#b7791f;
+--doc:#1aa05a;--zone:#e03a3a;--glare:#e5b800;--obs:#c026d3}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--card:#1d222b;--ink:#e8ebf2;--mute:#9aa4b6;--line:#2f3744;--accent:#7aa2ff;--ok:#4cc38a;--bad:#ff7a6b;--warn:#e3b341}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{padding:20px 20px 4px;max-width:1180px;margin:0 auto}h1{margin:0 0 4px;font-size:22px}header p{margin:0;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px}.chip b{color:var(--ok)}
+nav{max-width:1180px;margin:10px auto 0;padding:0 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px;font:inherit;color:var(--mute);cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-color:var(--accent);font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:18px 20px 60px}
+.lead{color:var(--mute);margin:0 0 16px;max-width:760px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.grid2{display:grid;grid-template-columns:minmax(300px,1.1fr) minmax(300px,1fr);gap:16px}@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.togs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tog{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:7px 12px;font:inherit;cursor:pointer}
+.tog[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tog.ghost{background:none;color:var(--mute)}
+.ladder{list-style:none;margin:0;padding:0}
+.rung{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;opacity:.55}
+.rung .n{width:22px;height:22px;border-radius:50%;background:var(--line);color:var(--ink);display:grid;place-items:center;font-size:12px;flex:none;margin-top:1px}
+.rung.fired{opacity:1;border-color:var(--bad)}.rung.fired .n{background:var(--bad);color:#fff}
+.rung.first{box-shadow:0 0 0 2px var(--bad) inset}
+.rung small{display:block;color:var(--mute)}
+.say{margin-top:12px;border-radius:10px;padding:12px 14px;font-weight:600;font-size:16px}
+.say.good{background:rgba(31,138,76,.14);color:var(--ok)}.say.bad{background:rgba(192,57,43,.13);color:var(--bad)}
+.note{font-size:13px;color:var(--mute);margin-top:8px}
+.tests{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.t{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.t h4{margin:0;font-size:14px}.t .ex{font-size:13px;color:var(--mute)}
+.badge{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}.b-ok{background:rgba(31,138,76,.16);color:var(--ok)}.b-bad{background:rgba(192,57,43,.16);color:var(--bad)}
+.num{font-size:12px;color:var(--mute)}
+.mut{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+.mut .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+select,input[type=search]{font:inherit;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.fr{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;text-align:left;padding:0;font:inherit;color:inherit}
+.fr:hover,.fr.sel{border-color:var(--accent)}
+.fr .im{position:relative;aspect-ratio:1/1;background:#222;display:grid;place-items:center}
+.fr .im img{max-width:100%;max-height:100%;display:block}
+.fr .cap{padding:6px 8px;font-size:12px}.fr .cap b{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.detail{position:sticky;top:8px}
+.imgwrap{position:relative;display:inline-block;max-width:100%}.imgwrap img{display:block;max-width:100%;height:auto;max-height:520px}
+.imgwrap svg{position:absolute;inset:0;width:100%;height:100%}
+.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;margin:6px 0}.leg label{display:flex;gap:5px;align-items:center;cursor:pointer}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+table{border-collapse:collapse;width:100%;font-size:14px}td{padding:5px 6px;border-top:1px solid var(--line);vertical-align:top}td:first-child{color:var(--mute);width:48%}
+.big{font-size:34px;font-weight:700;color:var(--ok);line-height:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:620px){.two{grid-template-columns:1fr}}
+code{background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:0 5px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Capture gate: what was tested, and what happened</h1>
+  <p>Every picture and number here came from a real run: the block's own tests, deliberate breaks, and all 152 project frames through the published workflow.</p>
+  <div class="chips" id="chips"></div>
+</header>
+<nav id="tabs"></nav>
+<main id="view"></main>
+
+<script>
+const D = __DATA__;
+const ORDER = ["too_dark","no_document","incomplete_document","obstructed","glare_over_data_zone","blurred"];
+const SAY = {too_dark:"Move to better light.",no_document:"Hold the card in front of the camera.",incomplete_document:"Move back so all four corners are in view.",
+  obstructed:"Move your finger or anything else off the text.",glare_over_data_zone:"Tilt the card to move the glare off the text.",blurred:"Hold steady."};
+const WHY = {too_dark:"The card is too dark to read.",no_document:"No card was found.",incomplete_document:"The card runs off the edge of the picture.",
+  obstructed:"Something covers the text.",glare_over_data_zone:"Glare is washing out the text.",blurred:"The text is out of focus."};
+const COL = {document:"#1aa05a",data_zone:"#e03a3a",glare:"#e5b800",obstruction:"#c026d3"};
+let uid = 0;
+
+/* ---------- a small drawing of a capture, reused by the playground and the test cards ---------- */
+function scene(s, w, h){
+  const id = "u" + (++uid), dark = s.dark, bg = s.brightOnDark ? "#1d1f24" : s.dimOnBright ? "#ece7dc" : "#d9d3c7";
+  let cardX = s.cut ? -6 : 38, o = "";
+  const cardFill = s.brightOnDark ? "#f1f4fb" : s.dimOnBright ? "#2c3446" : "#e7edf7";
+  const small = s.brightOnDark || s.dimOnBright;
+  const cw = small ? 64 : 224, ch = small ? 40 : 142, cx = small ? 118 : cardX, cy = small ? 80 : 28;
+  const zone = s.wide ? [cx+28, cy+ch*0.52, cw-56, ch*0.2] : [cx+cw*0.42, cy+ch*0.28, cw*0.5, ch*0.52];
+  o += `<svg viewBox="0 0 300 200" style="width:${w};height:${h}" xmlns="http://www.w3.org/2000/svg" role="img">`;
+  o += `<defs><filter id="b${id}"><feGaussianBlur stdDeviation="2.6"/></filter><radialGradient id="g${id}"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".55" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>`;
+  o += `<rect width="300" height="200" fill="${bg}"/>`;
+  if (s.text){ o += `<rect x="30" y="30" width="240" height="140" rx="8" fill="${cardFill}" stroke="#9aa4b6"/><text x="150" y="108" text-anchor="middle" font-size="22" fill="#2f5bd6" font-family="monospace">fixed text</text></svg>`; return o; }
+  if (!s.noCard){
+    o += `<rect x="${cx}" y="${cy}" width="${cw}" height="${ch}" rx="5" fill="${cardFill}" stroke="#7d869a"/>`;
+    if (!small){
+      o += `<rect x="${cx}" y="${cy}" width="${cw}" height="14" rx="5" fill="#2f4b7c"/>`;
+      if (!s.wide) o += `<rect x="${cx+12}" y="${cy+26}" width="${cw*0.3}" height="${ch*0.55}" fill="#b9c0d0"/>`;
+    }
+    o += `<g ${s.blur ? `filter="url(#b${id})"` : ""}>`;
+    const [zx,zy,zw,zh] = zone, rows = s.wide ? 2 : 5;
+    for (let i=0;i<rows;i++) o += `<rect x="${zx+4}" y="${zy+4+i*(zh-8)/rows}" width="${zw-8-(i%2?20:0)}" height="${Math.max(2.5,(zh-8)/rows-3)}" fill="${small?'#e8ecf5':'#3a4252'}"/>`;
+    o += `</g>`;
+    if (!s.noZone) o += `<rect x="${zx}" y="${zy}" width="${zw}" height="${zh}" fill="none" stroke="#e03a3a" stroke-width="1.6" stroke-dasharray="4 2"/>`;
+    const op = s.dim ? 0.3 : 0.92;
+    if (s.finger==="on") o += `<ellipse cx="${zx+zw*0.42}" cy="${zy+zh*0.55}" rx="${zw*0.62}" ry="${zh*0.34}" fill="#8a5a3c" opacity="${op}"/>`;
+    if (s.finger==="big") o += `<ellipse cx="${cx+cw*0.55}" cy="${cy+ch*0.6}" rx="${cw*0.5}" ry="${ch*0.48}" fill="#8a5a3c" opacity="${op}"/>`;
+    if (s.finger==="sliver") o += `<rect x="${zx}" y="${zy-1}" width="${zw}" height="1.6" fill="#8a5a3c"/>`;
+    if (s.covered) o += `<rect x="${Math.max(cx,0)}" y="${cy}" width="${cw}" height="${ch}" rx="5" fill="#8a5a3c" opacity=".93"/>`;
+    if (s.glare==="on") o += `<ellipse cx="${zx+zw*0.5}" cy="${zy+zh*0.5}" rx="${zw*0.42}" ry="${zh*0.5}" fill="url(#g${id})"/>`;
+    if (s.glare==="off") o += `<ellipse cx="${cx+cw*0.16}" cy="${cy+ch*0.82}" rx="${cw*0.12}" ry="${ch*0.12}" fill="url(#g${id})"/>`;
+  }
+  if (dark) o += `<rect width="300" height="200" fill="#000" opacity=".66"/>`;
+  return o + `</svg>`;
+}
+
+/* ---------- the verdict logic in miniature, mirroring the real block ---------- */
+function verdictFor(s){
+  const r = [];
+  if (s.dark) r.push("too_dark");
+  if (s.noCard) r.push("no_document");
+  else { if (s.cut) r.push("incomplete_document"); if (s.finger) r.push("obstructed"); if (s.glare) r.push("glare_over_data_zone"); }
+  const blurNotJudged = r.length>0 && !!s.blur && !s.noCard;
+  if (r.length===0 && s.blur && !s.noCard) r.push("blurred");
+  return {reasons: ORDER.filter(x=>r.includes(x)), blurNotJudged};
+}
+
+const TABS = [["try","1  Try it yourself"],["unit","2  The 29 unit tests"],["break","3  Breaking the block on purpose"],["frames","4  All 152 real frames"],["pub","5  Published vs local"]];
+const tabs = document.getElementById("tabs"), view = document.getElementById("view");
+TABS.forEach(([k,l])=>{const b=document.createElement("button");b.textContent=l;b.dataset.k=k;b.onclick=()=>show(k);tabs.appendChild(b)});
+function show(k){[...tabs.children].forEach(b=>b.setAttribute("aria-selected",b.dataset.k===k)); ({try:tabTry,unit:tabUnit,break:tabBreak,frames:tabFrames,pub:tabPub})[k](); window.scrollTo(0,0)}
+
+/* ---------- chips ---------- */
+const pass = D.tests.filter(t=>t.pass).length, caught = D.mutants.filter(m=>m.caught).length;
+document.getElementById("chips").innerHTML =
+  `<span class="chip"><b>${pass}/${D.tests.length}</b> unit tests pass</span><span class="chip"><b>${caught}/${D.mutants.length}</b> deliberate breaks caught</span>`+
+  `<span class="chip"><b>${D.same}/${D.n}</b> frames: platform-published = local</span><span class="chip">workflow <code>${D.slug}</code></span>`;
+
+/* ---------- tab 1 ---------- */
+function tabTry(){
+  const st = {};
+  const defs = [["dark","Room is dark"],["noCard","No card in view"],["cut","Card cut off by the edge"],["finger","Finger over the text"],["glare","Glare over the text"],["blur","Text is blurry"]];
+  view.innerHTML = `<p class="lead">Switch problems on and off. The right side shows what the block would say, and why. Only the <b>first</b> problem on the ladder becomes the instruction, because a person can fix one thing at a time. This is a simplified copy of the real logic: the real block measures brightness, edges, overlap and sharpness from the model's outlines.</p>
+  <div class="grid2"><div class="panel"><div id="sc"></div><div class="togs" id="togs"></div>
+  <div class="togs"><button class="tog ghost" data-p="reset">Reset</button><button class="tog ghost" data-p="a">Dark + cut off + finger</button><button class="tog ghost" data-p="b">Finger + glare</button><button class="tog ghost" data-p="c">Blurry + glare</button></div></div>
+  <div class="panel"><b>The ladder, top = most important</b><ol class="ladder" id="lad" style="margin-top:8px"></ol><div class="say good" id="say"></div><div class="note" id="note"></div></div></div>`;
+  const togs = document.getElementById("togs");
+  defs.forEach(([k,l])=>{const b=document.createElement("button");b.className="tog";b.textContent=l;b.setAttribute("aria-pressed","false");b.onclick=()=>{st[k]=!st[k];draw()};b.dataset.k=k;togs.appendChild(b)});
+  const pre = {reset:{},a:{dark:1,cut:1,finger:1},b:{finger:1,glare:1},c:{blur:1,glare:1}};
+  view.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{Object.keys(st).forEach(k=>st[k]=false);Object.assign(st,pre[b.dataset.p]);draw()});
+  function draw(){
+    const sc = {dark:st.dark,noCard:st.noCard,cut:st.cut,finger:st.finger?"on":null,glare:st.glare?"on":null,blur:st.blur};
+    document.getElementById("sc").innerHTML = scene(sc, "100%", "auto");
+    togs.querySelectorAll(".tog").forEach(b=>b.setAttribute("aria-pressed",!!st[b.dataset.k]));
+    const v = verdictFor(st), first = v.reasons[0];
+    document.getElementById("lad").innerHTML = ORDER.map((r,i)=>{const on=v.reasons.includes(r);
+      return `<li class="rung ${on?"fired":""} ${r===first?"first":""}"><span class="n">${i+1}</span><div><b>${r}</b><small>${on?(r===first?"FIRES. This is the instruction.":"also applies, but listed second"):(r==="blurred"&&v.blurNotJudged?"not judged: something above is wrong, so sharpness would mean nothing":WHY[r])}</small></div></li>`}).join("");
+    const say = document.getElementById("say");
+    say.className = "say " + (first?"bad":"good"); say.textContent = first ? SAY[first] : "Looks good. Capture it.";
+    document.getElementById("note").textContent = first ? `verdict: not_usable   reasons: [${v.reasons.join(", ")}]` : "verdict: usable   reasons: []";
+  }
+  draw();
+}
+
+/* ---------- tab 2 ---------- */
+function tabUnit(){
+  view.innerHTML = `<p class="lead">The block has 29 automated tests. Each one builds a fake capture, runs the block, and checks the answer. A red dashed box is the text zone. Brown is a finger, white is glare. All ${pass} of ${D.tests.length} pass.</p><div class="tests" id="tt"></div>`;
+  document.getElementById("tt").innerHTML = D.tests.map((t,i)=>`<div class="t"><div class="num">Test ${i+1}</div>${scene(t.scene,"100%","auto")}<h4>${t.plain}</h4><div class="ex"><b>Expect:</b> ${t.expect}</div><div><span class="badge ${t.pass?"b-ok":"b-bad"}">${t.pass?"PASS":"FAIL"}</span></div></div>`).join("");
+}
+
+/* ---------- tab 3 ---------- */
+function tabBreak(){
+  view.innerHTML = `<p class="lead">A test suite that always passes proves nothing. So I broke the block eleven different ways on purpose, one at a time, and re-ran the tests. A good suite should <b>notice every break</b>. Each row below is one deliberate bug, and the tests that caught it. The first run of this check found three tests that were not really checking anything. I fixed those.</p><div id="mm"></div>`;
+  document.getElementById("mm").innerHTML = D.mutants.map(m=>`<div class="mut"><div class="row"><b>${m.what}</b><span class="badge ${m.caught?"b-ok":"b-bad"}">${m.caught?"CAUGHT":"MISSED"}</span></div><div class="num">${m.failed.length} test(s) noticed</div><div class="pills">${m.failed.map(f=>`<span class="pill">${f}</span>`).join("")}</div></div>`).join("");
+}
+
+/* ---------- tab 4 ---------- */
+function first(f){return f.reasons.length?f.reasons[0]:"usable"}
+function tabFrames(){
+  const conds = [...new Set(D.frames.map(f=>f.condition))], firsts = [...new Set(D.frames.map(first))];
+  view.innerHTML = `<p class="lead">All ${D.n} project frames, as the published workflow judged them. The <b>condition</b> is what I was trying to photograph; the <b>verdict</b> is what the block said. They do not always agree, and that is informative: glare off the text is legitimately usable. Click a frame for the measurements behind its verdict. The model has seen the <i>train</i> frames; <i>valid</i> and <i>test</i> are new to it.</p>
+  <div class="filters"><select id="fc"><option value="">all conditions</option>${conds.map(c=>`<option>${c}</option>`).join("")}</select>
+  <select id="fv"><option value="">all verdicts</option>${firsts.map(c=>`<option>${c}</option>`).join("")}</select>
+  <select id="fs"><option value="">all splits</option><option>train</option><option>valid</option><option>test</option></select>
+  <select id="fk"><option value="">both cards</option><option>id</option><option>bank</option></select><input type="search" id="fq" placeholder="search name"><span class="num" id="cnt"></span></div>
+  <div class="grid2" style="grid-template-columns:minmax(300px,1.5fr) minmax(300px,1fr)"><div class="gal" id="gal"></div><div class="detail"><div class="panel" id="det"><span class="num">Click a frame.</span></div></div></div>`;
+  const ids = ["fc","fv","fs","fk","fq"].map(i=>document.getElementById(i)); ids.forEach(e=>e.oninput=list);
+  function poly(f, on){return f.outlines.filter(o=>on[o.class]).map(o=>`<polygon points="${o.points.map(p=>p[0]*f.w+","+p[1]*f.h).join(" ")}" fill="${COL[o.class]}" fill-opacity=".22" stroke="${COL[o.class]}" stroke-width="2.4"/>`).join("")}
+  function list(){
+    const [c,v,s,k,q]=ids.map(e=>e.value), fl = D.frames.filter(f=>(!c||f.condition===c)&&(!v||first(f)===v)&&(!s||f.split===s)&&(!k||f.card===k)&&(!q||f.file.includes(q)));
+    document.getElementById("cnt").textContent = fl.length+" frames";
+    document.getElementById("gal").innerHTML = fl.map(f=>`<button class="fr" data-f="${f.file}"><div class="im"><img src="${f.img}" alt=""></div><div class="cap"><b>${f.file.replace(".jpg","")}</b><span class="badge ${f.verdict==="usable"?"b-ok":"b-bad"}">${first(f)}</span></div></button>`).join("");
+    document.querySelectorAll(".fr").forEach(b=>b.onclick=()=>{document.querySelectorAll(".fr").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");detail(D.frames.find(f=>f.file===b.dataset.f))});
+  }
+  function detail(f){
+    const d = f.details, on = {document:true,data_zone:true,glare:true,obstruction:true};
+    const pc = x => x==null ? "n/a" : (x*100).toFixed(1)+"% of the text zone";
+    const rows = [
+      ["Brightness of the "+(d.brightness_region||"card")+" (95th percentile)", d.brightness_p95==null?"n/a":d.brightness_p95.toFixed(0)+" &nbsp; (too dark below 110)"],
+      ["Sharpness of the text", d.zone_sharpness==null?"<i>not judged: another problem was found first</i>":d.zone_sharpness.toFixed(2)+" &nbsp; (blurred below "+d.blur_threshold_used+")"],
+      ["Finger or object over the text", d.obstruction_zone_coverage==null?"n/a":pc(d.obstruction_zone_coverage)+" &nbsp; (counts from 2%)"],
+      ["Glare over the text", d.glare_zone_coverage==null?"n/a":pc(d.glare_zone_coverage)+" &nbsp; (counts from 2%)"],
+      ["Card touches the picture edge", d.card_touches_frame_edge==null?"n/a":(d.card_touches_frame_edge?"yes":"no")]];
+    const el = document.getElementById("det");
+    el.innerHTML = `<b>${f.file}</b><div class="num">${f.card} card · shot as <b>${f.condition}</b> · ${f.split}</div>
+      <div class="leg">${Object.keys(COL).map(c=>`<label><input type="checkbox" checked data-c="${c}"><span class="sw" style="background:${COL[c]}"></span>${c}</label>`).join("")}</div>
+      <div class="imgwrap"><img src="${f.img}" alt=""><svg id="ov" viewBox="0 0 ${f.w} ${f.h}" preserveAspectRatio="none">${poly(f,on)}</svg></div>
+      <div class="say ${f.verdict==="usable"?"good":"bad"}" style="margin-top:10px">${f.guidance}</div>
+      <div class="note">reasons: [${f.reasons.join(", ")||"none"}]</div>
+      <table style="margin-top:8px">${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table>`;
+    if (window.innerWidth <= 820) el.scrollIntoView({behavior:"smooth",block:"start"});
+    el.querySelectorAll("[data-c]").forEach(c=>c.onchange=()=>{on[c.dataset.c]=c.checked;document.getElementById("ov").innerHTML=poly(f,on)});
+  }
+  list();
+}
+
+/* ---------- tab 5 ---------- */
+function tabPub(){
+  view.innerHTML = `<p class="lead">The block was first tested as a JSON file on this machine. Then it was built in the Roboflow editor and published. The question: does the published version give the same answers?</p>
+  <div class="two"><div class="panel"><div class="big">${D.same} / ${D.n}</div><p>frames give exactly the same verdict, reasons and guidance in the published workflow as in my local copy.</p>
+  <p class="note">The workflow is <code>${D.slug}</code>: a trained model block feeding the custom <code>CaptureVerdict</code> block. The code on the platform is identical, character for character, to the code in the repository.</p></div>
+  <div class="panel"><b>The one difference I found along the way</b><p>On the glasses frame (<code>id-obstruction-018</code>) the first comparison gave a different answer. The published workflow's model block saw more of the glasses' thin arms: <b>3.96%</b> of the text zone, against <b>1.56%</b> locally, with the cut-off at 2%. That tipped it from "blurred / hold steady" (wrong) to "obstructed" (right).</p>
+  <p class="note">Cause: the platform editor uses a newer segmentation block (<code>@v4</code>) than my local spec (<code>@v2</code>). Changing my local spec to <code>@v4</code> made all 152 frames identical, so that was the cause.</p></div></div>
+  <div class="panel" style="margin-top:16px"><b>What this does not show</b><p class="note">That the verdicts are <i>right</i>, only that the published copy matches the local one. Whether they agree with a person's judgement is the separate agreement test, still to do. Combined problems (for example glare plus a cut-off card) do not exist in the data, so the ladder order for those cases is argued, not tested.</p></div>`;
+}
+show("try");
+</script>
+</body>
+</html>
