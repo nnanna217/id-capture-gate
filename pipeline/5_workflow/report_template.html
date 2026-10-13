@@ -123,7 +123,7 @@ function verdictFor(s){
   return {reasons: ORDER.filter(x=>r.includes(x)), blurNotJudged};
 }
 
-const TABS = [["try","1  Try it yourself"],["unit","2  The 29 unit tests"],["break","3  Breaking the block on purpose"],["frames","4  All 152 real frames"],["pub","5  Published vs local"]];
+const TABS = [["try","1  Try it yourself"],["unit","2  The 30 unit tests"],["break","3  Breaking the block on purpose"],["frames","4  All 152 real frames"],["pub","5  Published vs local"]];
 const tabs = document.getElementById("tabs"), view = document.getElementById("view");
 TABS.forEach(([k,l])=>{const b=document.createElement("button");b.textContent=l;b.dataset.k=k;b.onclick=()=>show(k);tabs.appendChild(b)});
 function show(k){[...tabs.children].forEach(b=>b.setAttribute("aria-selected",b.dataset.k===k)); ({try:tabTry,unit:tabUnit,break:tabBreak,frames:tabFrames,pub:tabPub})[k](); window.scrollTo(0,0)}
@@ -162,7 +162,7 @@ function tabTry(){
 
 /* ---------- tab 2 ---------- */
 function tabUnit(){
-  view.innerHTML = `<p class="lead">The block has 29 automated tests. Each one builds a fake capture, runs the block, and checks the answer. A red dashed box is the text zone. Brown is a finger, white is glare. All ${pass} of ${D.tests.length} pass.</p><div class="tests" id="tt"></div>`;
+  view.innerHTML = `<p class="lead">The block has 30 automated tests. Each one builds a fake capture, runs the block, and checks the answer. A red dashed box is the text zone. Brown is a finger, white is glare. All ${pass} of ${D.tests.length} pass.</p><div class="tests" id="tt"></div>`;
   document.getElementById("tt").innerHTML = D.tests.map((t,i)=>`<div class="t"><div class="num">Test ${i+1}</div>${scene(t.scene,"100%","auto")}<h4>${t.plain}</h4><div class="ex"><b>Expect:</b> ${t.expect}</div><div><span class="badge ${t.pass?"b-ok":"b-bad"}">${t.pass?"PASS":"FAIL"}</span></div></div>`).join("");
 }
 

@@ -90,6 +90,9 @@ def run(self, image, predictions, min_confidence=0.4, dark_p95=110.0, blur_min_b
             details['zone_sharpness'], details['zone_aspect'], details['blur_threshold_used'] = (sharp, aspect, limit)
             if sharp is not None and sharp < limit:
                 reasons.append('blurred')
+        elif not reasons and zone is None:
+            details['blurred_because_no_text_zone'] = True
+            reasons.append('blurred')
     reasons = [r for r in ORDER if r in reasons]
     details['thresholds'] = {'min_confidence': min_confidence, 'dark_p95': dark_p95, 'blur_min_block': blur_min_block, 'blur_min_wide': blur_min_wide, 'wide_aspect': wide_aspect, 'overlap_min': overlap_min, 'edge_margin_px': edge_margin_px, 'covered_card': covered_card}
     return {'verdict': 'not_usable' if reasons else 'usable', 'reasons': reasons, 'guidance': GUIDANCE[reasons[0]] if reasons else USABLE_GUIDANCE, 'details': details}

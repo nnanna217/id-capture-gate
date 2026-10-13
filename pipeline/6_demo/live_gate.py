@@ -349,7 +349,7 @@ def main():
             samples.append({"t": now, "raw": list(raw[1]), "shown": list(shown[1]), "ms": ms})
             if shown[0] == "usable":
                 usable_since = now if usable_since is None else usable_since
-                if armed and now - usable_since >= HOLD_S:
+                if armed and now - usable_since >= HOLD_S and raw[0] == "usable":
                     path = OUT / f"capture-{stamp}-{len(captures) + 1:02d}.jpg"
                     cv2.imwrite(str(path), frame)
                     captures.append({"t": round(now, 2), "file": str(path)})

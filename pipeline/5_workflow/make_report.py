@@ -1,6 +1,6 @@
 """Build an interactive, self-contained HTML report of the verdict block's tests: local/report/verdict-report.html
 
-Tabs: try the logic yourself, the 29 unit tests as pictures, the deliberate breaks, all 152 real frames with the model's outlines,
+Tabs: try the logic yourself, the 30 unit tests as pictures, the deliberate breaks, all 152 real frames with the model's outlines,
 and published-vs-local. Everything shown comes from real runs made when this script runs: it executes the unit tests and the
 mutation check itself and reads local/report/published-run.json (written by compare_published_workflow.py).
 The report contains the project's raw frames (resized, embedded), so it lives under local/ and is never committed.
@@ -35,7 +35,7 @@ def run_tests(src_path=None):
     return res
 
 tests = run_tests()
-assert len(tests) == 29, f"expected 29 tests, got {len(tests)}"
+assert len(tests) == 30, f"expected 30 tests, got {len(tests)}"
 
 # plain-English description, expected answer and a scene for each test, in the order the tests run
 META = [
@@ -57,6 +57,7 @@ META = [
  ("Dark, cut off and covered, all at once", "too_dark, incomplete_document, obstructed, in that order", {"dark": 1, "cut": 1, "finger": "on"}),
  ("The model finds the card but not the text zone", "falls back to the whole card, and says so", {"noZone": 1}),
  ("...and a large finger over that card", "obstructed (still caught)", {"noZone": 1, "finger": "big"}),
+ ("Card found, no text zone, nothing else wrong", "blurred (the text cannot be read)", {"noZone": 1, "blur": 1}),
  ("Two card detections", "the more confident one is used: usable", {}),
  ("The answer reports the cut-offs it used", "thresholds are listed in the details", {}),
  ("A bright card on a dark table", "NOT too_dark: brightness is judged on the card", {"brightOnDark": 1}),
@@ -87,6 +88,7 @@ MUTANTS = [
  ("Remove the rule for a fully covered card", "covered = bool(doc is not None and doc.any() and (obs & doc).sum() / float(doc.sum()) >= covered_card)", "covered = False"),
  ("Use one blur cut-off for both card layouts", "limit = blur_min_wide if (aspect is not None and aspect >= wide_aspect) else blur_min_block", "limit = blur_min_block"),
  ("Lower the darkness cut-off from 110 to 90", "dark_p95=110.0", "dark_p95=90.0"),
+ ("Pass a card whose text zone cannot be found", "elif not reasons and zone is None:", "elif False:"),
 ]
 tmp = Path("local/report/mutants"); tmp.mkdir(parents=True, exist_ok=True)
 mutants = []

@@ -117,6 +117,9 @@ r = call(scene(), [("document", DOC_M, 0.9), ("obstruction", rect(150, 250, 200,
 check("no text zone found: falls back to the whole card, and says so", r["details"]["zone_fallback_to_card"] is True, r)
 r = call(scene(), [("document", DOC_M, 0.9), ("obstruction", rect(80, 400, 100, 400), 0.8)])
 check("fallback still catches a large obstruction", r["reasons"] == ["obstructed"], r)
+r = call(scene(), [("document", DOC_M, 0.9)])
+check("card found, nothing else wrong, no text zone -> blurred (the text cannot be read), and says why",
+      r["reasons"] == ["blurred"] and r["details"].get("blurred_because_no_text_zone") is True and r["guidance"] == EXPECTED["blurred"], r)
 
 r = call(scene(), card + [("document", rect(10, 20, 10, 20), 0.5)])
 check("the highest-confidence document is the one used", r["verdict"] == "usable", r)

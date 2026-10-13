@@ -9,7 +9,7 @@ Output: verdict ("usable" / "not_usable"), reasons (every reason that applies, i
 There is deliberately no numeric quality score in the output contract (DECISIONS.md D-02, D-13).
 
 Precedence (D-13): too_dark, no_document, incomplete_document, obstructed, glare_over_data_zone, blurred.
-`blurred` is only judged when nothing above it applies: sharpness inside a dark, covered or glared text zone is not meaningful
+`blurred` is only judged when nothing above it applies (and it is also the answer when a card is found, nothing above applies and no text zone can be found): sharpness inside a dark, covered or glared text zone is not meaningful
 (measured: those frames fall in the same sharpness range as genuinely blurred ones).
 
 Defaults come from measurements on this project's 152 frames and are provisional where noted (BUILD-LOG.md, 2026-10-11):
@@ -139,6 +139,11 @@ def run(self, image, predictions, min_confidence=0.4, dark_p95=110.0, blur_min_b
             details["zone_sharpness"], details["zone_aspect"], details["blur_threshold_used"] = sharp, aspect, limit
             if sharp is not None and sharp < limit:
                 reasons.append("blurred")
+        # 6b. a card was found, nothing above applies, but the model cannot find the text zone at all: the text is not readable
+        # (seen live: a fully defocused card, card score 0.66, text-zone score 0.27 under the 0.4 cut-off, passed as usable)
+        elif not reasons and zone is None:
+            details["blurred_because_no_text_zone"] = True
+            reasons.append("blurred")
 
     reasons = [r for r in ORDER if r in reasons]
     details["thresholds"] = {"min_confidence": min_confidence, "dark_p95": dark_p95, "blur_min_block": blur_min_block,
