@@ -19,6 +19,7 @@ relative to it (`local/captures/`, `local/upload/`, `local/labels/`, ...). The A
 | `pipeline/3_dataset/` | Stage the upload set, the capture-group train/valid/test split, checks on a downloaded version export. |
 | `pipeline/4_train_eval/` | Per-class mask AP for the trained model, and latency benchmarks. |
 | `pipeline/5_workflow/` | The Workflow work: the verdict block (`verdict_block.py`, the single source of truth), its tests, the spec builder, the earlier custom-block spike, fetch-and-run the published workflow. |
+| `pipeline/6_demo/` | The live demo: `live_gate.py` runs the published workflow on a camera feed, shows one guidance sentence, and writes a session report (under `local/demo/`). |
 | `external/midv500/` | MIDV-500 (CC BY-SA 2.5): kept local, used only as the held-out test set. Never uploaded. |
 | `workflows/`, `data/` | Tracked workflow specs and small CSVs (splits, labelling order). |
 | `local/` | **Never committed.** Raw captures, staged uploads, labels, Roboflow exports, MIDV and the pre-crop originals. One `.gitignore` rule covers it. |
