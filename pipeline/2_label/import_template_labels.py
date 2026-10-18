@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 KEY = os.environ.get("ROBOFLOW_API_KEY", "")
 WS, PROJECT = "eze-nnanna-chijioke", "capture-gate"
-CLASSES = ["document", "data_zone", "glare", "obstruction"]
+CLASSES = ["document", "data_zone", "glare", "obstruction", "damage"]
 LABELMAP = {str(i): c for i, c in enumerate(CLASSES)}
 
 

@@ -1,0 +1,13 @@
+first,last,role,defect,severity,note
+3505,3519,clean,none,,bare undamaged cards shot first (good/ folder); IDs 3505-3511, bank 3512-3519 by eye
+3520,3527,damage,fold_corner,mild,corner folded or dog-eared away from the text
+3528,3552,damage,fold_half,severe,card folded in half or by a third; the fold flap often covers part of the text
+3553,3560,damage,crease_cross,severe,two crossing creases over the text zone
+3561,3592,damage,tear,mixed,notches missing corners and slits; mild or severe not yet judged per frame
+3593,3600,damage,roll,severe,card rolled into a tube (kept in the damage class by the user's call; an extreme case, a person would rarely submit this)
+3601,3609,negative,bow_tilt,,gently bowed or tilted undamaged cards (root of the folder)
+3610,3610,other,obstruction,,single-pass folder: finger over the card
+3611,3611,other,glare_direct,,single-pass folder: red light patch on the text
+3612,3612,other,partial,,single-pass folder: card cut by the frame edge
+3613,3613,other,blur,,single-pass folder: motion blur
+3614,3619,damage,stain,mixed,yellow stain over the text; diffuse damage, kept in the damage class by the user's call (a polygon around the stained region)
