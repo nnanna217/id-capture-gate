@@ -27,7 +27,7 @@ from pycocotools import mask as mu
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 
-CLASSES = ["document", "data_zone", "glare", "obstruction"]
+CLASSES = ["document", "data_zone", "glare", "obstruction", "damage"]
 
 
 def poly_mask(points, h, w):

@@ -31,15 +31,17 @@ SPLIT = Path("data/damage-split.csv")
 ORDER = Path("data/damage-labelling-order.csv")
 STAGE = Path("local/upload/damage")
 PRELABELS = Path("local/labels/damage-prelabels.json")
+PRELABELS_NEW = Path("local/labels/damage-prelabels-new.json")     # only photos that were not in the previous prelabels file
 ROLES = {"damage", "clean", "negative"}
 TARGET = {"train": 0.70, "valid": 0.20, "test": 0.10}
+RULE = "per (defect, card): 4+ groups so that train has 2, valid 1 and test 1"   # round 2 aims every kept damage type at this
 SEED = 7
 MIN_CONF = 0.4          # the block's own cut-off
 
 
 def assign(groups, frozen):
     """groups: {group: (n_photos, defect, card, role)}. frozen: {group: split}. Returns the full group -> split map."""
-    out = dict(frozen)
+    out = {g: sp for g, sp in frozen.items() if g in groups}        # a group that left the set (parked) stops counting
     todo = [g for g in sorted(groups) if g not in out]
     if not todo:
         return out
@@ -53,14 +55,15 @@ def assign(groups, frozen):
             tot[s] += groups[g][0]
         n = sum(tot.values())
         score = sum(abs(tot[s] / n - TARGET[s]) for s in TARGET) * 10
-        for key in {(groups[g][3], groups[g][1]) for g in full}:       # every (role, defect) in train; and in valid if it has >= 2 groups
-            gs = [g for g in full if (groups[g][3], groups[g][1]) == key]
-            if not any(full[g] == "train" for g in gs):
-                score += 50
-            if len(gs) >= 2 and not any(full[g] == "valid" for g in gs):
-                score += 8
-            if len(gs) >= 4 and not any(full[g] == "test" for g in gs):
-                score += 3
+        for key in {(groups[g][3], groups[g][1], groups[g][2]) for g in full}:      # per (role, defect, card): see RULE
+            gs = [g for g in full if (groups[g][3], groups[g][1], groups[g][2]) == key]
+            tr, va, te = (sum(full[g] == x for g in gs) for x in ("train", "valid", "test"))
+            n = len(gs)
+            score += 50 * max(0, min(2, n - 1 if n < 4 else 2) - tr)               # train: 2 groups when there are 4+, else at least 1
+            if n >= 2:
+                score += 10 * (va == 0)                                             # valid: at least 1
+            if n >= 3:
+                score += 4 * (te == 0)                                              # test: at least 1 once there are 3+
         for sp in ("valid", "test"):                                   # both card types on each side where possible
             cards = {groups[g][2] for g in full if full[g] == sp and groups[g][3] == "damage"}
             score += 1.5 * (2 - len(cards))
@@ -77,6 +80,15 @@ def poly(mask):
     c = max(cs, key=cv2.contourArea)
     c = cv2.approxPolyDP(c, 0.004 * cv2.arcLength(c, True), True)
     return [[float(x), float(y)] for x, y in c[:, 0, :]] if len(c) >= 3 else None
+
+
+def rect(mask):
+    """D-03: data_zone is ONE rectangle. The model's mask is a loose blob, so propose its rotated bounding rectangle instead."""
+    cs, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if not cs:
+        return None
+    box = cv2.boxPoints(cv2.minAreaRect(max(cs, key=cv2.contourArea)))
+    return [[float(x), float(y)] for x, y in box]
 
 
 def prelabel(files):
@@ -102,7 +114,7 @@ def prelabel(files):
             idx = [i for i in range(n) if names[i] == cls and p.confidence[i] >= MIN_CONF]
             if idx:
                 i = max(idx, key=lambda i: p.confidence[i])
-                pg = poly(p.mask[i])
+                pg = rect(p.mask[i]) if cls == "data_zone" else poly(p.mask[i])
                 if pg:
                     objs.append({"class": cls, "polygon": pg})
                     c[cls] = float(p.confidence[i])
@@ -131,6 +143,11 @@ def main():
 
     for s in TARGET:
         (STAGE / s).mkdir(parents=True, exist_ok=True)
+    keep = {Path(r["file"]).name for r in rows}
+    for sp in TARGET:                                   # drop staged copies of photos that left the set (parked) or moved split
+        for old in (STAGE / sp).glob("*.jpg"):
+            if old.name not in keep or full.get(next((r["group"] for r in rows if Path(r["file"]).name == old.name), ""), sp) != sp:
+                old.unlink()
     staged = []
     for r in rows:
         dst = STAGE / full[r["group"]] / Path(r["file"]).name
@@ -138,10 +155,19 @@ def main():
             shutil.copy2(r["file"], dst)
         staged.append((r, dst))
     print(f"staged {len(staged)} photos under {STAGE}/<split>/")
+    print(f"\nrule check, {RULE}:")
+    print(f"  {'defect':13}{'card':6}{'train':>6}{'valid':>6}{'test':>5}   short by")
+    for key in sorted({(groups[g][1], groups[g][2]) for g in full if groups[g][3] == "damage"}):
+        gs = [g for g in full if groups[g][3] == "damage" and (groups[g][1], groups[g][2]) == key]
+        tr, va, te = (sum(full[g] == x for g in gs) for x in ("train", "valid", "test"))
+        short = [f"{need - have} {nm}" for nm, have, need in (("train", tr, 2), ("valid", va, 1), ("test", te, 1)) if have < need]
+        print(f"  {key[0]:13}{key[1]:6}{tr:6d}{va:6d}{te:5d}   {', '.join(short) or 'ok'}")
 
+    before = set(json.loads(PRELABELS.read_text())) if PRELABELS.exists() else set()
     labels, conf = prelabel([d for _, d in staged])
     PRELABELS.parent.mkdir(parents=True, exist_ok=True)
     PRELABELS.write_text(json.dumps(labels))
+    PRELABELS_NEW.write_text(json.dumps({k: v for k, v in labels.items() if k not in before}))
     ordr = []
     for r, d in staged:
         c, o = conf[d.name], labels[d.name]["objects"]
@@ -164,7 +190,7 @@ def main():
         w.writerows(ordr)
     chk = sum(1 for x in ordr if x[9])
     print(f"pre-labels: {sum(1 for l in labels.values() if l['objects'])} photos with outlines; {chk} flagged for an outline check")
-    print(f"wrote {SPLIT}, {ORDER}, {PRELABELS}")
+    print(f"wrote {SPLIT}, {ORDER}, {PRELABELS} and {PRELABELS_NEW} ({len(labels) - len(before & set(labels))} new photos: import THIS file for them, not the full one)")
 
 
 if __name__ == "__main__":

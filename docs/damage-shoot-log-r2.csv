@@ -1,0 +1,31 @@
+card,layout,what,photos,how,done,notes,folder_name
+R2-ID-01,id,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-ID-01-tear
+R2-ID-02,id,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-ID-02-tear
+R2-ID-03,id,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-ID-03-tear
+R2-ID-04,id,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-ID-04-tear
+R2-ID-05,id,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-ID-05-curl
+R2-ID-06,id,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-ID-06-curl
+R2-ID-07,id,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-ID-07-curl
+R2-ID-08,id,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-ID-08-curl
+R2-ID-09,id,fold_corner,3,corner folded over about 12 mm,,,R2-ID-09-fold_corner
+R2-ID-10,id,fold_corner,3,corner folded over about 12 mm,,,R2-ID-10-fold_corner
+R2-ID-11,id,stain,3,a small stain on the card,,,R2-ID-11-stain
+R2-ID-12,id,stain,3,a small stain on the card,,,R2-ID-12-stain
+R2-BANK-01,bank,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-BANK-01-tear
+R2-BANK-02,bank,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-BANK-02-tear
+R2-BANK-03,bank,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-BANK-03-tear
+R2-BANK-04,bank,tear,3,"rip a clear bite, 10-20 mm, from an edge or a corner (vary which)",,,R2-BANK-04-tear
+R2-BANK-05,bank,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-BANK-05-curl
+R2-BANK-06,bank,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-BANK-06-curl
+R2-BANK-07,bank,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-BANK-07-curl
+R2-BANK-08,bank,curl,3,"corner lifted about 10 mm (roll over a pen, lay down, shoot at once)",,,R2-BANK-08-curl
+R2-BANK-09,bank,fold_corner,3,corner folded over about 12 mm,,,R2-BANK-09-fold_corner
+R2-BANK-10,bank,fold_corner,3,corner folded over about 12 mm,,,R2-BANK-10-fold_corner
+R2-BANK-11,bank,stain,3,a small stain on the card,,,R2-BANK-11-stain
+R2-BANK-12,bank,stain,3,a small stain on the card,,,R2-BANK-12-stain
+R2-ID-13,id,fingers,5,"undamaged bare card, fingers at the edges or lightly over the card",,,R2-ID-13-fingers
+R2-ID-14,id,fingers,5,"undamaged bare card, fingers at the edges or lightly over the card",,,R2-ID-14-fingers
+R2-ID-15,id,clean,5,"undamaged bare card, varied surface or in a hand",,,R2-ID-15-clean
+R2-BANK-13,bank,fingers,5,"undamaged bare card, fingers at the edges or lightly over the card",,,R2-BANK-13-fingers
+R2-BANK-14,bank,fingers,5,"undamaged bare card, fingers at the edges or lightly over the card",,,R2-BANK-14-fingers
+R2-BANK-15,bank,clean,5,"undamaged bare card, varied surface or in a hand",,,R2-BANK-15-clean

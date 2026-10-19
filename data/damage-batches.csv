@@ -1,13 +1,68 @@
-first,last,role,defect,severity,note
-3505,3519,clean,none,,bare undamaged cards shot first (good/ folder); IDs 3505-3511, bank 3512-3519 by eye
-3520,3527,damage,fold_corner,mild,corner folded or dog-eared away from the text
-3528,3552,damage,fold_half,severe,card folded in half or by a third; the fold flap often covers part of the text
-3553,3560,damage,crease_cross,severe,two crossing creases over the text zone
-3561,3592,damage,tear,mixed,notches missing corners and slits; mild or severe not yet judged per frame
-3593,3600,damage,roll,severe,card rolled into a tube (kept in the damage class by the user's call; an extreme case, a person would rarely submit this)
-3601,3609,negative,bow_tilt,,gently bowed or tilted undamaged cards (root of the folder)
-3610,3610,other,obstruction,,single-pass folder: finger over the card
-3611,3611,other,glare_direct,,single-pass folder: red light patch on the text
-3612,3612,other,partial,,single-pass folder: card cut by the frame edge
-3613,3613,other,blur,,single-pass folder: motion blur
-3614,3619,damage,stain,mixed,yellow stain over the text; diffuse damage, kept in the damage class by the user's call (a polygon around the stained region)
+first,last,role,defect,severity,note,set
+3505,3519,clean,none,,"bare undamaged cards shot first (good/ folder); IDs 3505-3511, bank 3512-3519 by eye",
+3520,3527,damage,fold_corner,mild,corner folded or dog-eared away from the text,
+3528,3552,parked,fold_half,severe,card folded in half or by a third; the fold flap often covers part of the text; PARKED 2026-10-18: not a realistic capture and the model found 1 of 10 half-folds and 0 of 5 rolls on unseen photos (D-19),
+3553,3560,parked,crease,severe,"two crossing creases; PARKED 2026-10-18: part of this range was marked as half-folds, and the type is out of this iteration (D-19 amendment)",
+3561,3592,damage,tear,mixed,notches missing corners and slits; mild or severe not yet judged per frame,
+3593,3600,parked,roll,severe,"card rolled into a tube (kept in the damage class by the user's call; an extreme case, a person would rarely submit this); PARKED 2026-10-18: not a realistic capture and the model found 1 of 10 half-folds and 0 of 5 rolls on unseen photos (D-19)",
+3601,3609,negative,bow_tilt,,gently bowed or tilted undamaged cards (root of the folder),
+3610,3610,other,obstruction,,single-pass folder: finger over the card,
+3611,3611,other,glare_direct,,single-pass folder: red light patch on the text,
+3612,3612,other,partial,,single-pass folder: card cut by the frame edge,
+3613,3613,other,blur,,single-pass folder: motion blur,
+3614,3619,damage,stain,mixed,"yellow stain over the text; diffuse damage, kept in the damage class by the user's call (a polygon around the stained region)",
+3620,3622,clean,none,,"good-2 folder: bare undamaged cards, bank cards on a wood table",wood
+3623,3625,clean,none,,"good-2 folder: bare undamaged cards, bank cards on a laptop and keyboard",keys
+3628,3630,clean,none,,"good-2 folder: bare undamaged cards, ID cards on a laptop, keyboard and desk",keys
+3631,3635,clean,none,,"good-2 folder: bare undamaged cards, ID cards on wood, in a hand and on a dark lap",mixed
+3639,3643,negative,fingers,,"round 2: ID cards in a hand, fingers on or near the card, undamaged",r2neg-id-a
+3644,3648,negative,fingers,,"round 2: bank cards in a hand or flat, fingers on or near the card, undamaged",r2neg-bank-a
+3649,3651,damage,fold_corner,,round 2: ID card with a folded corner,r2fc-id-a
+3652,3654,damage,fold_corner,,round 2: bank card with a folded corner (IMG_3653 missing),r2fc-bank-a
+3655,3657,damage,curl,,"round 2: bank card, corner peeled up (white back visible)",r2curl-bank-a
+3658,3660,damage,curl,,"round 2: ID card, corner peeled up",r2curl-id-a
+3661,3662,damage,tear,,"round 2: bank card, bite torn out (a crease line is also visible; creases are not labelled)",r2tear-bank-a
+3663,3665,damage,tear,,"round 2: ID card, slit or bite torn out",r2tear-id-a
+3666,3666,damage,tear,,"round 2: bank card, bite torn from the top-left",r2tear-bank-b
+3667,3667,damage,tear,,"round 2: ID card, bite torn from the lower right",r2tear-id-b
+3668,3668,damage,curl,,"round 2: ID card, bottom-left corner peeled up",r2curl-id-b
+3669,3669,damage,tear,,"round 2: bank card, bite torn from the top-left",r2tear-bank-c
+3670,3670,damage,tear,,"round 2: ID card on a dark desk, corner torn off",r2tear-id-c
+3671,3671,damage,tear,,"round 2: bank card on a dark desk, piece torn out",r2tear-bank-d
+3672,3672,damage,stain,,round 2: ID card with brown stains,r2stain-id-a
+3673,3675,damage,stain,,round 2: bank card with a brown stain,r2stain-bank-a
+3676,3676,damage,stain,,round 2: ID card with brown stains,r2stain-id-a
+3678,3679,damage,fold_corner,,round 2b: id card (fold_corner),r2b-fc-id-a
+3680,3681,damage,fold_corner,,round 2b: id card (fold_corner),r2b-fc-id-b
+3682,3683,damage,fold_corner,,round 2b: bank card (fold_corner),r2b-fc-bank-a
+3684,3684,damage,fold_corner,,round 2b: bank card (fold_corner),r2b-fc-bank-b
+3685,3686,damage,fold_corner,,round 2b: id card (fold_corner),r2b-fc-id-c
+3687,3687,damage,fold_corner,,round 2b: bank card (fold_corner),r2b-fc-bank-c
+3688,3689,damage,fold_corner,,round 2b: id card (fold_corner),r2b-fc-id-d
+3690,3690,damage,fold_corner,,round 2b: bank card (fold_corner),r2b-fc-bank-d
+3691,3693,negative,fingers,,round 2b: bank card (fingers),r2b-fing-bank-a
+3694,3697,negative,fingers,,round 2b: bank card (fingers),r2b-fing-bank-b
+3698,3700,negative,fingers,,round 2b: bank card (fingers),r2b-fing-bank-c
+3701,3701,negative,fingers,,round 2b: id card (fingers),r2b-fing-id-a
+3702,3704,negative,fingers,,round 2b: id card (fingers),r2b-fing-id-b
+3705,3707,negative,fingers,,round 2b: id card (fingers),r2b-fing-id-c
+3708,3710,negative,fingers,,round 2b: id card (fingers),r2b-fing-id-d
+3711,3712,damage,stain,,round 2b: bank card (stain),r2b-stain-bank-a
+3713,3715,damage,stain,,round 2b: bank card (stain),r2b-stain-bank-b
+3716,3717,damage,stain,,round 2b: id card (stain),r2b-stain-id-a
+3718,3719,damage,stain,,round 2b: id card (stain),r2b-stain-id-b
+3720,3721,damage,curl,,round 2b: bank card (curl),r2b-curl-bank-a
+3722,3722,damage,curl,,round 2b: id card (curl),r2b-curl-id-a
+3723,3723,damage,curl,,round 2b: bank card (curl),r2b-curl-bank-b
+3724,3724,damage,curl,,round 2b: id card (curl),r2b-curl-id-b
+3725,3726,damage,curl,,round 2b: bank card (curl),r2b-curl-bank-c
+3727,3727,damage,tear,,round 2b: id card (tear),r2b-tear-id-a
+3728,3728,damage,tear,,round 2b: bank card (tear),r2b-tear-bank-a
+3729,3731,damage,tear,,round 2b: bank card (tear),r2b-tear-bank-b
+3732,3734,damage,tear,,round 2b: id card (tear),r2b-tear-id-b
+3735,3735,damage,tear,,round 2b: bank card (tear),r2b-tear-bank-c
+3736,3736,damage,tear,,round 2b: id card (tear),r2b-tear-id-c
+3737,3738,damage,tear,,round 2b: id card (tear),r2b-tear-id-d
+3739,3740,damage,tear,,round 2b: id card (tear),r2b-tear-id-e
+3741,3742,damage,tear,,round 2b: id card (tear),r2b-tear-id-f
+3743,3746,damage,tear,,round 2b: id card (tear),r2b-tear-id-g
