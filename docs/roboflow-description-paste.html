@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roboflow description (copy from here)</title>
+<style>
+  :root { color-scheme: light; }
+  body { background: #ffffff; color: #1a1a1a; font: 16px/1.55 system-ui, sans-serif; max-width: 760px; margin: 0 auto; padding: 24px 16px; }
+  .tip { background: #f3f6ff; border: 1px solid #c9d6ff; border-radius: 8px; padding: 10px 14px; font-size: 14px; margin-bottom: 20px; }
+  #copy-me { border: 1px dashed #bbb; border-radius: 8px; padding: 8px 18px; }
+</style>
+</head>
+<body>
+<div class="tip"><strong>How to use:</strong> click inside the dashed box, press Cmd+A (selects only the box), then Cmd+C, and paste into the Roboflow description box. Nothing outside the dashed box is copied.</div>
+
+<div id="copy-me" contenteditable="true" spellcheck="false">
+<p><strong>Real-time ID Photo Check</strong> tells you what to fix before you photograph your ID card.</p>
+
+<p>It answers one question: can the text on this card be read? If not, it gives one short instruction, such as "Tilt the card to move the glare off the text." There is no quality score.</p>
+
+<p>This project is the dataset and segmentation model behind it. Five classes mark the card (<em>document</em>), its printed text block (<em>data_zone</em>), <em>glare</em>, anything covering the card (<em>obstruction</em>) and physical <em>damage</em> (corner folds, tears, creases, stains, peeled corners). A custom Roboflow Workflow block reads those masks and returns usable or not usable, the reasons, and the one instruction.</p>
+
+<p><strong>Real-time</strong></p>
+<p>In my live demo the check runs on a laptop camera feed. Across three live sessions the median time per frame was 72 to 96 ms (model plus decision logic, Apple M3, run locally with Roboflow Inference). The live demo uses an earlier model version (v2); version 6, listed here, adds the damage class and is not in the live check yet. The Try this model box on this page checks one uploaded image at a time.</p>
+
+<p><strong>Data</strong></p>
+<ul>
+<li>340 images, shot by me on a phone, of printed specimen ID cards and bank-style cards I designed for this project. No real identity document and no personal data appears on any card. The images show my desk and hands because the project is public.</li>
+<li>Conditions: good, glare (direct and oblique), a finger, pen, cable or glasses over the text, the card partly out of frame, low light, blur, and damage.</li>
+<li>Split by capture set-up, not at random, so near-identical frames never sit in both train and test.</li>
+<li>Document and data_zone outlines come from the printed card layout (feature matching and a homography). Glare, obstruction and damage are hand-labelled polygons.</li>
+</ul>
+
+<p><strong>Model</strong></p>
+<p>RF-DETR Seg Nano, instance segmentation, 312 x 312 input (version 6).</p>
+
+<p><strong>Results (version 6)</strong></p>
+<ul>
+<li>Roboflow's validation-set headline: mAP@50 93.1%, precision 93.6%, recall 91.4%.</li>
+<li>My own scoring on the held-out test split, AP50 (instances in brackets): document 1.000, data_zone 0.985, glare 0.967 (5), obstruction 0.868 (18), damage 0.568 (27).</li>
+<li>Damage is the hardest class. On 41 damaged photos the model never trained on, it found the damage on 35 (confidence 0.4 or higher, overlap with my outline 0.5 or higher).</li>
+</ul>
+
+<p><strong>Limits</strong></p>
+<ul>
+<li>Small dataset from one person, one phone and two card designs. The test split is small (glare has only 5 test instances), and damage scores far lower on test than on validation.</li>
+<li>The text-block class depends on this card layout. On an unfamiliar card type the model can lose the text block.</li>
+<li>Not for verifying real identity documents. Out of scope: reading the text, authenticity or tamper checks, face matching.</li>
+</ul>
+
+<p><strong>Use it</strong></p>
+<ul>
+<li>Model: eze-nnanna-chijioke/capture-gate-6-rfdetr-seg-nano-t1 (the model id keeps the project's old name), through Roboflow Inference or the Try this model box above.</li>
+<li>Code and decision log: <a href="https://github.com/nnanna217/id-capture-gate">https://github.com/nnanna217/id-capture-gate</a></li>
+<li>Licence: CC BY 4.0. Please credit Nnanna Eze.</li>
+</ul>
+</div>
+</body>
+</html>
